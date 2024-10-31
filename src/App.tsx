@@ -10,20 +10,18 @@ const { Content } = Layout;
 
 function App() {
   return (
-    <>
-      <BrowserRouter>
-        <Layout style={{ minHeight: "100vh" }}>
-          <Navigation />
-          <Content>
-            <Routes>
-              <Route path="/" element={<Main />} />
-              <Route path="login" element={<Login />} />
-              <Route path="register" element={<Register />} />
-            </Routes>
-          </Content>
-        </Layout>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <Layout style={{ minHeight: "100vh" }}>
+        <Navigation />
+        <Content>
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+          </Routes>
+        </Content>
+      </Layout>
+    </BrowserRouter>
   );
 }
 

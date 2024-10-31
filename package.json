@@ -1,5 +1,7 @@
 {
   "name": "rl-arena-frontend",
+  "displayName": "RLArena - ML/RL competitions",
+  "author": "MintBrain",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -14,7 +16,9 @@
     "antd": "^5.21.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.27.0"
+    "react-router-dom": "^6.27.0",
+    "@react-buddy/ide-toolbox": "^2.4.0",
+    "@react-buddy/palette-antd": "^5.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
