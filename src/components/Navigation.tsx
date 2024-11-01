@@ -27,7 +27,7 @@ const Navigation: React.FC = () => {
 
   return (
     <Layout.Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-      <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline" items={items} onSelect={handleMenuSelect} />
+      <Menu style={{ userSelect: 'none'}} theme="dark" defaultSelectedKeys={["1"]} mode="inline" items={items} onSelect={handleMenuSelect} />
     </Layout.Sider>
   );
 };
