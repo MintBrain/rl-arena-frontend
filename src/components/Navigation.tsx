@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
-import { SelectInfo } from "rc-menu/lib/interface";
-import type { MenuProps } from "antd";
-import { Layout, Menu } from "antd";
 import { useNavigate } from "react-router-dom";
+import { Layout, Menu } from "antd";
+import { DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
+import type { MenuProps } from "antd";
 
-const { Sider } = Layout;
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -23,14 +21,14 @@ const Navigation: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
 
-  function handleMenuSelect(data: SelectInfo) {
+  const handleMenuSelect: MenuProps["onSelect"] = (data) => {
     navigate(data.key);
-  }
+  };
 
   return (
-    <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+    <Layout.Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
       <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline" items={items} onSelect={handleMenuSelect} />
-    </Sider>
+    </Layout.Sider>
   );
 };
 

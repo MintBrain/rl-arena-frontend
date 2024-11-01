@@ -1,9 +1,9 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Layout } from "antd";
 import Login from "./pages/Login/Login.tsx";
 import Register from "./pages/Register/Register.tsx";
 import Main from "./pages/Main/Main.tsx";
 import Navigation from "./components/Navigation.tsx";
-import { Layout } from "antd";
 // import "./App.css";
 
 const { Content } = Layout;
@@ -13,7 +13,10 @@ function App() {
     <BrowserRouter>
       <Layout style={{ minHeight: "100vh" , width:'100vw' }}>
         <Navigation />
-        <Content>
+        <Content style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: "center" }}>
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="login" element={<Login />} />
