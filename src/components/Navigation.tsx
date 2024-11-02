@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Layout, Menu } from "antd";
 import { DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
@@ -20,6 +20,12 @@ const items: MenuItem[] = [
 const Navigation: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [selectedKey, setSelectedKey] = useState(location.pathname);
+
+  useEffect(() => {
+    setSelectedKey(location.pathname);
+  }, [location.pathname]);
 
   const handleMenuSelect: MenuProps["onSelect"] = (data) => {
     navigate(data.key);
@@ -27,7 +33,7 @@ const Navigation: React.FC = () => {
 
   return (
     <Layout.Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-      <Menu style={{ userSelect: 'none'}} theme="dark" defaultSelectedKeys={["1"]} mode="inline" items={items} onSelect={handleMenuSelect} />
+      <Menu style={{ userSelect: 'none'}} theme="dark" defaultSelectedKeys={["1"]} mode="inline" items={items} selectedKeys={[selectedKey]} onSelect={handleMenuSelect} />
     </Layout.Sider>
   );
 };

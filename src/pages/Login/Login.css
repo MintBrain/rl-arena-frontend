@@ -1,0 +1,25 @@
+.form-container {
+    @apply flex flex-col justify-start items-center min-h-screen box-border;
+    padding-top: 132px;
+}
+
+.form-login {
+    width: 360px;
+    padding: 32px;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    flex-shrink: 0;
+    margin: 0 0 0 0;
+}
+
+@media (max-height: 700px) {
+    .form-container {
+        padding-top: 32px !important; /* Уменьшение отступа при меньшей высоте экрана */
+    }
+}
+
+.form-input {
+    height: 32px;
+    @apply rounded-lg;
+}
