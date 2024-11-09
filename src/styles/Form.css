@@ -3,8 +3,9 @@
     padding-top: 132px;
 }
 
-.form-login {
-    width: 360px;
+.form {
+    max-width: 600px;
+    width: 450px;
     padding: 32px;
     border-radius: 12px;
     background: #fff;
@@ -21,5 +22,14 @@
 
 .form-input {
     height: 32px;
-    @apply rounded-lg;
+    @apply rounded-md text-sm;
 }
+
+.form-container .ant-col.ant-form-item-label {
+    padding: 0 0 10px 0 !important;
+}
+
+.form-container .ant-form-item-control-input {
+    min-height: 10px !important;
+}
+
