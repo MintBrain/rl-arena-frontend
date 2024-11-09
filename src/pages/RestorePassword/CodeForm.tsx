@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, FormProps, Input, message, Typography } from "antd";
+import { Button, Form, FormProps, InputNumber, message, Typography } from "antd";
 import { NextButton, ReturnLink } from "./Misc.tsx";
 import { StepFormProps } from "./RestorePassword.tsx";
 import FormItemLabel from "../../components/FormItemLabel.tsx";
 import axios from "axios";
 
 export type FieldType = {
-  restoreCode: string;
+  restoreCode: number;
 }
 
 const CodeForm: React.FC<StepFormProps> = ({ email, formProps, nextStep, onReturnClick }) => {
@@ -45,7 +45,6 @@ const CodeForm: React.FC<StepFormProps> = ({ email, formProps, nextStep, onRetur
     try {
       const response = await axios.post("https://httpbin.org/post", restoreCode, { withCredentials: true });
       if (response.status === 400) {
-
         form.setFields([{ name: "restoreCode", errors: ["Код неверен"] }]);
       } else if (response.status !== 200) {
         throw new Error(response.statusText);
@@ -74,9 +73,20 @@ const CodeForm: React.FC<StepFormProps> = ({ email, formProps, nextStep, onRetur
       </Form.Item>
 
       <Form.Item<FieldType> name="restoreCode" className="my-0 w-full" label={<FormItemLabel text="Код" />}
-                            rules={[{ required: true, message: "Введите проверочный код" },
-                              { len: 6, message: "Код должен быть 6 цифр" }]}>
-        <Input type="text" name="restoreCode" id="restoreCode" autoComplete="oneTimeCode" placeholder="123456" />
+                            rules={[
+                              { required: true, message: "Введите проверочный код" },
+                              () => ({
+                                  validator(_, value) {
+                                    if (!value || value.toString().length === 6) {
+                                      return Promise.resolve();
+                                    }
+                                    return Promise.reject(new Error("Код должен быть 6 цифр"));
+                                  }
+                                }
+                              )]}>
+        <InputNumber className="form-input w-full" controls={false} name="restoreCode" id="restoreCode"
+                     autoComplete="oneTimeCode" placeholder="123456"
+                     min={0} maxLength={6} />
       </Form.Item>
 
       <Form.Item className="my-6 " style={{ marginTop: 12, marginBottom: 24 }}>
