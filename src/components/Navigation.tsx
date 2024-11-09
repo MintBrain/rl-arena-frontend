@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Layout, Menu } from "antd";
-import { DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
+import { DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
 
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -14,7 +14,8 @@ function getItem(label: React.ReactNode, key: React.Key, icon?: React.ReactNode,
 const items: MenuItem[] = [
   getItem("Main page", "/", <PieChartOutlined />),
   getItem("Register", "/register", <DesktopOutlined />),
-  getItem("Login", "/login", <DesktopOutlined />)
+  getItem("Login", "/login", <DesktopOutlined />),
+  getItem("Restore", "/restore", <DesktopOutlined />),
 ];
 
 const Navigation: React.FC = () => {

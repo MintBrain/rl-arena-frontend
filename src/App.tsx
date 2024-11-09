@@ -5,6 +5,7 @@ import Register from "./pages/Register/Register.tsx";
 import Main from "./pages/Main/Main.tsx";
 import Navigation from "./components/Navigation.tsx";
 import { NotFound } from "./components/NotFound.tsx";
+import RestorePassword from "./pages/RestorePassword/RestorePassword.tsx";
 // import "./App.css";
 
 const { Content } = Layout;
@@ -19,6 +20,7 @@ function App() {
             <Route path="/" element={<Main />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
+            <Route path="restore" element={<RestorePassword />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
         </Content>
