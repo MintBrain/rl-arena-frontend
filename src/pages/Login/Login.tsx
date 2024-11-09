@@ -1,16 +1,16 @@
-import axios from "axios";
-import { Form, Input, Button, Typography, Checkbox, message } from "antd";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Form, Input, Button, Typography, Checkbox, message } from "antd";
 import type { FormProps } from "antd";
-import "./Login.css";
+import FormItemLabel from "../../components/FormItemLabel.tsx";
+import axios from "axios";
+import "../../styles/Form.css";
 
 type FieldType = {
   username?: string;
   password?: string;
   remember?: boolean;
 };
-
 
 function Login() {
   const [loading, setLoading] = useState(false);
@@ -21,11 +21,14 @@ function Login() {
     setLoading(true);
     try {
       const response = await axios.post("https://httpbin.org/post", values, { withCredentials: true });
-      if (response.status !== 200) {
+      if (response.status === 201) {
+        message.error("Неверный логин или пароль");
+      } else if (response.status !== 200) {
         throw new Error(response.statusText);
+      } else {
+        message.success("Успешный вход!");
+        navigate("/");
       }
-      message.success("Успешный вход!");
-      navigate("/");
     } catch (error) {
       console.error(error);
       message.error("Ошибка входа");
@@ -46,32 +49,47 @@ function Login() {
         form={form}
         name="login"
         size="middle"
-        className="form-login"
+        className="form"
+        layout="vertical"
         initialValues={{ remember: true, username: "nickName", password: "testPassword" }}
         onFinish={onFormFinish}
         onFinishFailed={onFormFinishFailed}
+        requiredMark={false}
       >
+        <Typography.Title level={4} className="text-left text-textSecondary font-bold" style={{ marginBottom: 24 }}>
+          Вход в систему
+        </Typography.Title>
 
-        <Typography.Title level={4} className="text-left mb-5 text-textSecondary font-bold">Вход в
-          систему</Typography.Title>
-
-        <Form.Item className="my-6">
-          <Typography.Text className="font-bold">Логин</Typography.Text>
-          <Form.Item<FieldType> name="username" rules={[{required: true, message: "Пожалуйста, введите логин!" }]}
-                                noStyle>
-            <Input className="form-input" type="text" name="username" id="username" placeholder="Введите логин"
-                   autoComplete="username" />
-          </Form.Item>
+        <Form.Item<FieldType> className="my-0" label={<FormItemLabel text="Логин" />} name="username"
+                              rules={[{ required: true, message: "Пожалуйста, введите логин!" },
+                                {
+                                  min: 4,
+                                  message: "Логин должен быть не менее 4 символов"
+                                },
+                                {
+                                  max: 32,
+                                  message: "Логин должен быть не более 32 символов"
+                                }]}>
+          <Input className="form-input" type="text" name="username" id="username" placeholder="Введите логин"
+                 autoComplete="username" />
         </Form.Item>
 
-        <Form.Item className="mt-6 mb-3">
-          <Typography.Text className="font-bold">Пароль</Typography.Text>
-          <Form.Item<FieldType> name="password" rules={[{ required: true, message: "Пожалуйста, введите пароль!" }]}
-                                noStyle>
-            <Input.Password className="form-input" type="password" name="password" id="password"
-                            placeholder="Введите пароль"
-                            autoComplete="current-password" /></Form.Item>
+        <Form.Item<FieldType> style={{ marginTop: 24, marginBottom: 12 }} label={<FormItemLabel text="Пароль" />}
+                              name="password"
+                              rules={[{ required: true, message: "Пожалуйста, введите пароль!" },
+                                {
+                                  min: 8,
+                                  message: "Пароль должен быть не менее 8 символов"
+                                },
+                                {
+                                  max: 32,
+                                  message: "Пароль должен быть не более 32 символов"
+                                }]}>
+          <Input.Password className="form-input" type="password" name="password" id="password"
+                          placeholder="Введите пароль"
+                          autoComplete="currentPassword" />
         </Form.Item>
+
         <Form.Item<FieldType> name="remember"
                               valuePropName="checked" noStyle>
           <Checkbox name="remember">Запомнить меня</Checkbox>
@@ -87,7 +105,7 @@ function Login() {
           <Link to="/restore">Забыли пароль?</Link>
         </Form.Item>
 
-        <Form.Item className="flex justify-center my-0">
+        <Form.Item className="flex justify-center mt-3 mb-0">
           <Typography.Text>
             Нет аккаунта?
           </Typography.Text>
