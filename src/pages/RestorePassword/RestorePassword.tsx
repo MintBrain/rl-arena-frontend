@@ -15,7 +15,7 @@ const formProps: FormProps = {
   layout: "vertical",
   scrollToFirstError: true,
   requiredMark: false,
-  validateTrigger: "onFinish"
+  validateTrigger: "onSubmit"
 };
 
 export interface StepFormProps {

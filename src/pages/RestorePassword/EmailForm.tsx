@@ -3,7 +3,7 @@ import { Form, FormProps, Input, message, Typography } from "antd";
 import { NextButton, ReturnLink } from "./Misc.tsx";
 import FormItemLabel from "../../components/FormItemLabel.tsx";
 import { StepFormProps } from "./RestorePassword.tsx";
-import axios from "axios";
+import api from "../../api/service.api.ts";
 
 export type FieldType = {
   email: string;
@@ -16,13 +16,14 @@ const EmailForm: React.FC<StepFormProps> = ({ email, formProps, nextStep, onRetu
   const onEmailFinish: FormProps<FieldType>["onFinish"] = async ({ email }) => {
     setLoading(true);
     try {
-      const response = await axios.post("https://httpbin.org/post", email, { withCredentials: true });
+      const response = await api.checkRestorePasswordEmail({ email });
 
-      if (response.status === 201) {
+      if (response.status === 401) {
         form.setFields([{ name: "email", errors: ["Указанная почта не зарегистрирована в системе."] }]);
       } else if (response.status !== 200) {
-        throw new Error(response.statusText);
+        message.error(response.statusText);
       } else {
+        console.log(response.data); // TODO: Store restoreToken
         nextStep!();
       }
     } catch (error) {

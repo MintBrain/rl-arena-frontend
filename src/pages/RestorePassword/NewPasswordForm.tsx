@@ -4,7 +4,7 @@ import { Form, FormProps, Input, message } from "antd";
 import { NextButton } from "./Misc.tsx";
 import { StepFormProps } from "./RestorePassword.tsx";
 import FormItemLabel from "../../components/FormItemLabel.tsx";
-import axios from "axios";
+import api from "../../api/service.api.ts";
 
 export type FieldType = {
   password: string;
@@ -17,11 +17,15 @@ const NewPasswordForm: React.FC<StepFormProps> = ({ formProps }) => {
   const onNewPasswordFinish: FormProps<FieldType>["onFinish"] = async ({ password }) => {
     setLoading(true);
     try {
-      const response = await axios.post("https://httpbin.org/post", password, { withCredentials: true });
-      if (response.status !== 200) {
-        throw new Error(response.statusText);
+      const response = await api.restorePasswordNewPassword({ email: "1@1.ru", password, restoreToken: "test" }); // TODO: Get restoreToken from store. Probably no need in email.
+
+      if (response.status === 401) {
+        message.error("Сессия восстановления пароля истекла!");
+      } else if (response.status !== 200) {
+        message.error(response.statusText);
       } else {
-        navigate("/");
+        message.success("Пароль успешно сменен!");
+        navigate("login");
       }
     } catch (error) {
       console.error(error);
@@ -81,7 +85,7 @@ const NewPasswordForm: React.FC<StepFormProps> = ({ formProps }) => {
           })
         ]}
       >
-        <Input.Password className="form-input" type="password" name="password" id="password"
+        <Input.Password className="form-input" type="password" name="password" id="confirmPassword"
                         placeholder="Повторите пароль"
                         autoComplete="newPassword" />
       </Form.Item>

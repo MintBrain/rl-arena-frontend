@@ -3,7 +3,7 @@ import { Button, Form, FormProps, InputNumber, message, Typography } from "antd"
 import { NextButton, ReturnLink } from "./Misc.tsx";
 import { StepFormProps } from "./RestorePassword.tsx";
 import FormItemLabel from "../../components/FormItemLabel.tsx";
-import axios from "axios";
+import api from "../../api/service.api.ts";
 
 export type FieldType = {
   restoreCode: number;
@@ -27,11 +27,14 @@ const CodeForm: React.FC<StepFormProps> = ({ email, formProps, nextStep, onRetur
     setTime(defaultTime);
     setLoading(true);
     try {
-      const response = await axios.post("https://httpbin.org/post", { withCredentials: true });
+      const response = await api.resendRestoreCode({ email: email!, restoreToken: "test" }); // TODO: Get restoreToken from store
+
       if (response.status !== 200) {
-        throw new Error(response.statusText);
+        message.error("Ошибка отправки кода подтверждения!");
+        setTime(10);
+      } else {
+        message.success("Код успешно отправлен на " + email + "!");
       }
-      message.success("Код успешно отправлен на " + email + "!");
     } catch (error) {
       console.error(error);
       message.error("Ошибка отправки кода подтверждения!");
@@ -43,11 +46,12 @@ const CodeForm: React.FC<StepFormProps> = ({ email, formProps, nextStep, onRetur
   const onCodeFinish: FormProps<FieldType>["onFinish"] = async ({ restoreCode }) => {
     setLoading(true);
     try {
-      const response = await axios.post("https://httpbin.org/post", restoreCode, { withCredentials: true });
-      if (response.status === 400) {
-        form.setFields([{ name: "restoreCode", errors: ["Код неверен"] }]);
+      const response = await api.checkRestorePasswordCode({ restoreCode, email: email!, restoreToken: "test" }); // TODO: Get restoreToken from store
+
+      if (response.status === 401) {
+        form.setFields([{ name: "restoreCode", errors: ["Неверный код подтверждения!"] }]);
       } else if (response.status !== 200) {
-        throw new Error(response.statusText);
+        message.error(response.statusText);
       } else {
         nextStep!();
       }

@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Form, Input, Button, Typography, Checkbox, message } from "antd";
 import type { FormProps } from "antd";
 import FormItemLabel from "../../components/FormItemLabel.tsx";
-import axios from "axios";
+import api from "../../api/service.api.ts";
+import { LoginRequest } from "../../types/api.ts";
 import "../../styles/Form.css";
 
 type FieldType = {
@@ -20,11 +21,12 @@ function Login() {
   const onFormFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     setLoading(true);
     try {
-      const response = await axios.post("https://httpbin.org/post", values, { withCredentials: true });
-      if (response.status === 201) {
+      const response = await api.login(values as LoginRequest);
+
+      if (response.status === 401) {
         message.error("Неверный логин или пароль");
       } else if (response.status !== 200) {
-        throw new Error(response.statusText);
+        message.error("Ошибка авторизации. Попробуйте еще.");
       } else {
         message.success("Успешный вход!");
         navigate("/");

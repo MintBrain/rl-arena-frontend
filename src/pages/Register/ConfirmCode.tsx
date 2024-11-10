@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Button, Typography, Space, FormProps, message, InputNumber } from "antd";
 import FormItemLabel from "../../components/FormItemLabel.tsx";
-import axios from "axios";
 import "../../styles/Form.css";
+import api from "../../api/service.api.ts";
 
 interface Props {
   email: string;
@@ -33,11 +33,12 @@ const ConfirmCode: React.FC<Props> = ({ email, onReturn }) => {
     setTime(defaultTime);
     setLoading(true);
     try {
-      const response = await axios.post("https://httpbin.org/post", { withCredentials: true });
-      if (response.status === 200) {
-        message.success("Код успешно отправлен на " + email + "!");
+      const response = await api.resendRegistrationCode({ email });
+      if (response.status !== 200) {
+        message.error("Ошибка отправки кода подтверждения!");
+        setTime(10);
       } else {
-        throw new Error(response.statusText);
+        message.success("Код успешно отправлен на " + email + "!");
       }
     } catch (error) {
       console.error(error);
@@ -47,19 +48,19 @@ const ConfirmCode: React.FC<Props> = ({ email, onReturn }) => {
     }
   };
 
-  const onFormFinish: FormProps<FieldType>["onFinish"] = async (values) => {
+  const onFormFinish: FormProps<FieldType>["onFinish"] = async ({ verificationCode }) => {
     setLoading(true);
     try {
-      const response = await axios.post("https://httpbin.org/post", values, { withCredentials: true });
-      if (response.status === 200) {
+      const response = await api.checkRegistrationCode({ email, verificationCode: verificationCode! });
+      if (response.status !== 200) {
+        form.setFields([{ name: "verificationCode", errors: ["Неверный код подтверждения!"] }]);
+      } else {
         message.success("Успешная регистрация!");
         navigate("/");
-      } else {
-        throw new Error(response.statusText);
       }
     } catch (error) {
       console.error(error);
-      message.error("Ошибка подтверждения кода");
+      message.error("Ошибка проверки кода подтверждения. Попробуйте ещё.");
     } finally {
       setLoading(false);
     }

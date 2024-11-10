@@ -10,7 +10,8 @@ import { Link } from "react-router-dom";
 import FormItemLabel from "../../components/FormItemLabel.tsx";
 import "../../styles/Form.css";
 import ConfirmCode from "./ConfirmCode.tsx";
-import axios from "axios";
+import api from "../../api/service.api.ts";
+import { RegisterRequest } from "../../types/api.ts";
 
 type FieldType = {
   username?: string;
@@ -28,11 +29,15 @@ const Register: React.FC = () => {
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     setLoading(true);
     try {
-      const response = await axios.post("https://httpbin.org/post", values, { withCredentials: true });
-      if (response.status !== 200) {
-        throw new Error(response.statusText);
+      const response = await api.register(values as RegisterRequest);
+
+      if (response.status === 400) {
+        message.error("Ошибка регистрации");
+      } else if (response.status !== 201) {
+        message.error("Ошибка регистрации. Попробуйте еще.");
+      } else {
+        setCodePage(true);
       }
-      setCodePage(true);
     } catch (error) {
       console.error(error);
       message.error("Ошибка входа");
@@ -59,7 +64,7 @@ const Register: React.FC = () => {
           }}
           onFinish={onFinish}
           scrollToFirstError
-          validateTrigger="onFinish"
+          validateTrigger="onSubmit"
           requiredMark={false}
         >
           <Typography.Title level={4} className="text-left text-textSecondary font-bold" style={{ marginBottom: 24 }}>
@@ -144,7 +149,7 @@ const Register: React.FC = () => {
               })
             ]}
           >
-            <Input.Password className="form-input" type="password" name="password" id="password"
+            <Input.Password className="form-input" type="password" name="password" id="confirmPassword"
                             placeholder="Повторите пароль"
                             autoComplete="newPassword" />
           </Form.Item>

@@ -5,6 +5,7 @@ import App from "../App.tsx";
 import Navigation from "../components/Navigation.tsx";
 import Login from "../pages/Login/Login.tsx";
 import Register from "../pages/Register/Register.tsx";
+import CodeForm from "../pages/RestorePassword/CodeForm.tsx";
 
 const ComponentPreviews = () => {
   return (
@@ -23,6 +24,9 @@ const ComponentPreviews = () => {
       </ComponentPreview>
       <ComponentPreview path="/Register">
         <Register />
+      </ComponentPreview>
+      <ComponentPreview path="/CodeForm">
+        <CodeForm />
       </ComponentPreview>
     </Previews>
   );
