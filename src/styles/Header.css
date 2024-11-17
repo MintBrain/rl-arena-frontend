@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root .header-button {
+    width: 40px;
+    height: 40px;
+    margin: 0 0 0 20px;
+}
+
+.header-devider {
+    height: 32px;
+    margin: 0 32px 0 32px;
+}
