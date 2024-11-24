@@ -1,5 +1,5 @@
 .form-container {
-    @apply flex flex-col justify-start items-center min-h-screen box-border;
+    @apply flex flex-col justify-start items-center min-h-full box-border;
     padding-top: 132px;
 }
 

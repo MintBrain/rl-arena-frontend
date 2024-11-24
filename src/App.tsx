@@ -7,6 +7,8 @@ import Navigation from "./components/Navigation.tsx";
 import { NotFound } from "./components/NotFound.tsx";
 import RestorePassword from "./pages/RestorePassword/RestorePassword.tsx";
 import { Header } from "./components/Header.tsx";
+import Competitions from "./pages/Competitions/Competitions.tsx";
+import Datasets from "./pages/Datasets/Datasets.tsx";
 // import "./App.css";
 
 const { Content } = Layout;
@@ -23,6 +25,8 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
             <Route path="restore" element={<RestorePassword />} />
+            <Route path="competitions" element={<Competitions /> }/>
+            <Route path="datasets" element={<Datasets/>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Content>

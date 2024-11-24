@@ -5,7 +5,8 @@ import App from "../App.tsx";
 import Navigation from "../components/Navigation.tsx";
 import Login from "../pages/Login/Login.tsx";
 import Register from "../pages/Register/Register.tsx";
-import CodeForm from "../pages/RestorePassword/CodeForm.tsx";
+import { Header } from "../components/Header.tsx";
+import CompetitionCard from "../components/CompetitionCard.tsx";
 
 const ComponentPreviews = () => {
   return (
@@ -25,8 +26,13 @@ const ComponentPreviews = () => {
       <ComponentPreview path="/Register">
         <Register />
       </ComponentPreview>
-      <ComponentPreview path="/CodeForm">
-        <CodeForm />
+      <ComponentPreview path="/Header">
+        <Header />
+      </ComponentPreview>
+      <ComponentPreview path="/Card">
+        <CompetitionCard title='Заголовок соревнования' description='Какое-то краткое описание карточки,
+какое-то краткое описание карточки,
+какое-то краткое описание карточки.' tags={['RL', 'Fruits']} reward={1000} deadline={Date.now()}/>
       </ComponentPreview>
     </Previews>
   );

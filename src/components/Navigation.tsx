@@ -13,7 +13,7 @@ function getItem(label: React.ReactNode, key: React.Key, icon?: React.ReactNode,
 
 const items: MenuItem[] = [
   getItem("Главная", "/", <HomeOutlined />),
-  getItem("Соревнования", "/list", <CarryOutOutlined />),
+  getItem("Соревнования", "/competitions", <CarryOutOutlined />),
   getItem("Датасеты", "/datasets", <TableOutlined />),
   getItem("Register", "/register"),
   getItem("Login", "/login"),
