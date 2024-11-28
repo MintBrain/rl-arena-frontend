@@ -35,7 +35,16 @@ const Navigation: React.FC = () => {
   };
 
   return (
-    <Layout.Sider width="230px" className="text-nowrap" trigger={null} collapsible collapsed={collapsed}>
+    <Layout.Sider width="230px" className="text-nowrap" trigger={null} collapsible collapsed={collapsed} style={{
+      height: "100vh",
+      overflow: "auto",
+      position: "sticky",
+      insetInlineStart: 0,
+      top: 0,
+      bottom: 0,
+      scrollbarWidth: "thin",
+      scrollbarGutter: "stable"
+    }}>
       <Button type="text"
               icon={collapsed ? <MenuUnfoldOutlined style={{ color: "white" }} /> :
                 <MenuFoldOutlined style={{ color: "white" }} />}

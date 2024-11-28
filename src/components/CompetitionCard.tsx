@@ -48,7 +48,8 @@ const CompetitionCard: React.FC<CardProps> = ({ title, description, tags, reward
         padding: 16,
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        background: '#fff',
       }}>
         <Typography.Text style={{ fontWeight: 500 }}>{reward} ₽</Typography.Text>
         <Typography.Text>{getTimeRemaining(deadline || 0)}</Typography.Text>
