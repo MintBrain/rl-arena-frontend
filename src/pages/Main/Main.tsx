@@ -7,7 +7,7 @@ const cardProps = {
   description:"Какое-то краткое описание карточки,какое-то краткое описание карточки, какое-то краткое описание карточки.",
   tags:["RL", "Fruits", "Fruits"],
   reward: 1000,
-  deadline: Date.now() + 88600 * 1000,
+  deadline: Date.now() + 86403  * 1000,
 }
 
 function Main() {

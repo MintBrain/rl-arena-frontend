@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Tag, Typography } from "antd";
 import { getTimeRemaining } from "../utils/timeFormat.ts";
 
@@ -14,6 +14,17 @@ interface CardProps {
 
 
 const CompetitionCard: React.FC<CardProps> = ({ title, description, tags, reward, deadline }) => {
+  const [timeRemaining, setTimeRemaining] = useState(() => getTimeRemaining(deadline || 0));
+
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeRemaining(getTimeRemaining(deadline || 0));
+    }, 1000); // Update every second
+
+    return () => clearInterval(timer);
+  }, [deadline]);
+
   return (
     <div style={{ width: 300, height: 364 }}>
       <Card cover={<img
@@ -52,7 +63,7 @@ const CompetitionCard: React.FC<CardProps> = ({ title, description, tags, reward
         background: '#fff',
       }}>
         <Typography.Text style={{ fontWeight: 500 }}>{reward} ₽</Typography.Text>
-        <Typography.Text>{getTimeRemaining(deadline || 0)}</Typography.Text>
+        <Typography.Text>{timeRemaining}</Typography.Text>
       </div>
     </div>
   );
