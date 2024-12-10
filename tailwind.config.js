@@ -13,6 +13,7 @@ export default {
       },
       fontFamily: {
         default: 'Roboto, sans-serif',
+        inter: "Inter, sans-serif",
       },
       fontSize: {
         sm: ['14px', '20px'],

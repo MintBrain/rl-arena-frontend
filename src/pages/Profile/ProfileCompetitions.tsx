@@ -1,44 +1,52 @@
-import { Row, Typography } from "antd";
+import { Col, Image, Row, Typography } from "antd";
 import React from "react";
+import { Link } from "react-router-dom";
 
 
-const competitionData = [
-  {
-    title: "Название соревнования",
-    description: "Описание соревнования.",
-    prize: "$100,000",
-    timeLeft: "1 месяц до окончания",
-  },
-  {
-    title: "Название соревнования",
-    description: "Описание соревнования.",
-    prize: "$100,000",
-    timeLeft: "1 месяц до окончания",
-  },
-  // Add more competitions as needed
-];
+interface Props {
+  competitions: {
+    title: string;
+    shortDescription: string;
+    prize: number;
+    deadline: number;
+    image: string;
+  }[];
+}
 
-
-const ProfileCompetitions = () => {
+const ProfileCompetitions: React.FC<Props> = ({ competitions }) => {
   return (
-    <div className="flex flex-col m-2.5">
-      <div className="flex justify-between items-center">
-        <Typography.Text> Название соревнования</Typography.Text>
-        <Typography.Text> Описание соревнования</Typography.Text>
+    <div className="max-w-[78.5%] p-0">
+      <div className="flex justify-between items-center py-[16px]">
+        <Typography.Text className="text-base font-bold">Соревнования</Typography.Text>
+        <Link to="/competitions" className="text-accentColor ml-2">  {/* TODO: Pass query params for filter user competitions */}
+          Все соревнования
+        </Link>
       </div>
-      <div style={{
-        height: 52,
-        border: "1px solid #DADADA",
-        borderTop: 0,
-        borderRadius: "0 0 16px 16px",
-        padding: 16,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        background: "#fff"
-      }}>
-        <Typography.Text style={{ fontWeight: 500 }}>{1000} ₽</Typography.Text>
-        <Typography.Text>{"Остался 1 месяц"}</Typography.Text>
+      <div className="">
+        <Row gutter={0} align="middle" justify="center">
+          {competitions.slice(0, 6).map((competition, index) => (
+            <Col key={index}>
+              <div
+                className="flex flex-col justify-between gap-y-[8px] overflow-hidden bg-white p-[24px] w-[358px] h-[130px] "
+                style={{ border: "1px solid #DADADA" }}>
+                <div className="flex items-end">
+                  <Image width={24} height={24} preview={false} style={{ borderRadius: 12 }} src={competition.image}
+                         alt="competition" />
+                  <Typography.Text
+                    className="text-sm font-default text-text ml-[12px]">{competition.title}</Typography.Text>
+                </div>
+                <Typography.Paragraph
+                  className="font-semibold font-default text-sm text-textSecondary text-opacity-45 !m-0">{competition.shortDescription}</Typography.Paragraph>
+                <div className="flex flex-row justify-between">
+                  <Typography.Text
+                    className="font-default text-textSecondary text-opacity-45">{competition.prize}</Typography.Text>
+                  <Typography.Text
+                    className="font-default text-textSecondary text-opacity-45">{competition.deadline}</Typography.Text>
+                </div>
+              </div>
+            </Col>
+          ))}
+        </Row>
       </div>
     </div>
   );
