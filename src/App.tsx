@@ -9,6 +9,7 @@ import RestorePassword from "./pages/RestorePassword/RestorePassword.tsx";
 import { Header } from "./components/Header.tsx";
 import Competitions from "./pages/Competitions/Competitions.tsx";
 import Datasets from "./pages/Datasets/Datasets.tsx";
+import Profile from "./pages/Profile/Profile.tsx";
 // import "./App.css";
 
 const { Content } = Layout;
@@ -27,6 +28,7 @@ function App() {
             <Route path="restore" element={<RestorePassword />} />
             <Route path="competitions" element={<Competitions /> }/>
             <Route path="datasets" element={<Datasets/>} />
+            <Route path="profile" element={<Profile/>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Content>

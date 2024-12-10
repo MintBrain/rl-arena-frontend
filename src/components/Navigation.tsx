@@ -15,9 +15,10 @@ const items: MenuItem[] = [
   getItem("Главная", "/", <HomeOutlined />),
   getItem("Соревнования", "/competitions", <CarryOutOutlined />),
   getItem("Датасеты", "/datasets", <TableOutlined />),
+  getItem("Profile", "/profile"),
   getItem("Register", "/register"),
   getItem("Login", "/login"),
-  getItem("Restore", "/restore")
+  getItem("Restore", "/restore"),
 ];
 
 const Navigation: React.FC = () => {
