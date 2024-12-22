@@ -1,0 +1,8 @@
+const GeneralInfo = () => {
+  return (
+    <><span
+      className="w-full">TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST</span></>
+  );
+};
+
+export default GeneralInfo;

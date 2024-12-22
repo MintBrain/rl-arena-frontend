@@ -1,0 +1,12 @@
+
+/*.tab-nav .ant-tabs-nav::before {*/
+/*    border-bottom: 2px solid #ff0000;*/
+/*    width: 100vw;*/
+/*}*/
+
+
+.tab-label {
+    width: 152px;
+    display: inline-block;
+    text-align: center;
+}

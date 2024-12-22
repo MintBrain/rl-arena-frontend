@@ -19,6 +19,7 @@ const items: MenuItem[] = [
   getItem("Register", "/register"),
   getItem("Login", "/login"),
   getItem("Restore", "/restore"),
+  getItem("Create Competition", "/create-competition"),
 ];
 
 const Navigation: React.FC = () => {

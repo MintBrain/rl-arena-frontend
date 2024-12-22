@@ -8,12 +8,6 @@ type SearchProps = GetProps<typeof Input.Search>;
 
 const MenuItems = [{ label: "Все датасеты", key: "1" }, { label: "Мои датасеты", key: "2" }];
 
-const options = [
-  { label: 'Apple', value: 'Apple' },
-  { label: 'Pear', value: 'Pear' },
-  { label: 'Orange', value: 'Orange' },
-];
-
 const DatasetsHeader = () => {
   const [selectedItem, setSelectedItem] = useState("1");
   const [position, setPosition] = useState("1");
