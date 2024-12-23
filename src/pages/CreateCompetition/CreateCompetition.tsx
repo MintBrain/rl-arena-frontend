@@ -102,9 +102,9 @@ const mockData: FieldType = {
   tags: ["RL", "ML"],
   visibility: "public",
   participation: "everyone",
-  name: "dsf",
-  description: "dsfsdf",
-  url: "example.com/competitions/sdf",
+  name: "Название",
+  description: "Описание",
+  url: "example.com/competitions/shortLink",
   // startDate: "2024-12-22T02:00:00.000Z",
   // endDate: "2024-12-30T19:08:00.000Z",
   backgroundImage: {
@@ -122,11 +122,11 @@ const mockData: FieldType = {
       }
     ]
   },
-  competitionDescription: "dsf",
-  detailedDescription: "dsf",
-  goals: "sdf",
-  rules: "sdfs",
-  prizeInfo: "dfsdf",
+  competitionDescription: "Короткое описание",
+  detailedDescription: "Подробное описание",
+  goals: "Цели",
+  rules: "Правила",
+  prizeInfo: "Информация о призах",
   documentation: {
     file: { uid: "rc-upload-1734886430430-29" },
     fileList: [
@@ -143,7 +143,7 @@ const mockData: FieldType = {
     ]
   },
   rlRepository: "https://example.com/competitions/",
-  rlSolutionExtension: ".sdf",
+  rlSolutionExtension: ".dat",
   rlPublicFiles: {
     file: { uid: "rc-upload-1734886430430-19" },
     fileList: [
@@ -196,7 +196,7 @@ const CreateCompetition = () => {
 
 
   return (
-    <div className="w-full h-full flex justify-center items-center bg-background-primary">
+    <div className="create-competition-page w-full h-full flex justify-center items-center bg-background-primary">
       <Form.Provider onFormFinish={onFormFinish}>
       <div className="flex justify-center flex-col max-w-[78.5%] self-start w-full">
         <div className="flex flex-row mt-[16px] justify-between">
