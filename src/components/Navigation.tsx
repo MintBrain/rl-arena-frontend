@@ -21,6 +21,7 @@ const items: MenuItem[] = [
   getItem("Restore", "/restore"),
   getItem("Create Competition", "/create-competition"),
   getItem("Competition", "/competitions/1"),
+  getItem("Settings", "/settings"),
 ];
 
 const Navigation: React.FC = () => {

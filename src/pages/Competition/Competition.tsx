@@ -48,7 +48,7 @@ const Competition = () => {
           <div className="flex justify-center flex-col max-w-[78.5%] self-start w-full">
             <div className="flex flex-row mt-[16px] justify-between">
               <Typography.Text className="text-left text-text opacity-85 text-xxl font-medium font-inter">
-                Название соревнования
+                Название соревнования {id}
               </Typography.Text>
               <Button type="primary" htmlType="submit" className="w-[95px] rounded-[2px]">
                 Участвовать

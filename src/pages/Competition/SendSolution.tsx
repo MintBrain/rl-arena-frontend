@@ -21,7 +21,6 @@ const SendSolution: React.FC = () => {
       message.warning('Please select a file before uploading.');
       return;
     }
-
     setIsUploading(true);
 
     // Mock API request with a 2-second delay

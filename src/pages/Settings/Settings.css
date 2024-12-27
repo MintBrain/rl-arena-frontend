@@ -1,0 +1,32 @@
+
+.settings-container {
+    @apply w-full h-full flex items-start flex-col bg-background-primary;
+}
+
+.settings-page {
+    .block {
+        @apply flex flex-col w-full items-center;
+    }
+
+    .line-separator {
+        border-bottom: 1px solid #DADADA;
+    }
+
+    .max-w-block {
+        @apply flex flex-col max-w-[78.5%] w-full;
+    }
+
+    .text {
+        @apply text-left text-text opacity-85;
+    }
+
+    .button {
+        @apply w-fit px-[15px] py-[4px] rounded-[2px] font-bold text-sm font-default text-primary;
+    }
+
+    /* .ant-btn-color-dangerous */
+    .color-danger {
+        color: #ff4d4f;
+        box-shadow: 0 2px 0 rgba(255, 38, 5, 0.06);
+    }
+}

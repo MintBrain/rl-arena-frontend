@@ -12,6 +12,7 @@ import Datasets from "./pages/Datasets/Datasets.tsx";
 import Profile from "./pages/Profile/Profile.tsx";
 import CreateCompetition from "./pages/CreateCompetition/CreateCompetition.tsx";
 import Competition from "./pages/Competition/Competition.tsx";
+import Settings from "./pages/Settings/Settings.tsx";
 // import "./App.css";
 
 const { Content } = Layout;
@@ -28,11 +29,12 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
             <Route path="restore" element={<RestorePassword />} />
-            <Route path="competitions" element={<Competitions /> }/>
-            <Route path="datasets" element={<Datasets/>} />
-            <Route path="profile" element={<Profile/>} />
+            <Route path="competitions" element={<Competitions />} />
+            <Route path="datasets" element={<Datasets />} />
+            <Route path="profile" element={<Profile />} />
             <Route path="create-competition" element={<CreateCompetition />} />
-            <Route path="competitions/:id" element={<Competition/>} />
+            <Route path="competitions/:id" element={<Competition />} />
+            <Route path="settings" element={<Settings />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Content>
