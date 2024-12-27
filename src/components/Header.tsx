@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button, Divider, Layout } from "antd";
 import Icon from "@ant-design/icons";
 import { Settings, Search } from "@mui/icons-material";
@@ -44,11 +45,15 @@ export const Header = () => {
         alignItems: "center"
       }}>
         <Button type="text" icon={<Search />} className="header-button" />
-        <Button type="text" icon={<Settings />} className="header-button" />
+        <Link to="/settings" className="header-link">
+          <Button type="text" icon={<Settings />} className="header-button" />
+        </Link>
         <Divider type="vertical" className="header-devider" />
 
-        <Button type="text" icon={<UserIcon />} className="header-button"
-                style={{ width: "auto", marginLeft: 0 }}>Username</Button>
+        <Link to="/profile" className="header-link">
+          <Button type="text" icon={<UserIcon />} className="header-button"
+                  style={{ width: "auto", marginLeft: 0 }}>Username</Button>
+        </Link>
         <Divider type="vertical" className="header-devider" />
 
         <Button type="text" icon={<LogOutIcon />} className="header-button" style={{ marginLeft: 0 }} />

@@ -12,3 +12,7 @@
     height: 32px;
     margin: 0 32px 0 32px;
 }
+
+.header-link {
+    @apply inline-flex items-center justify-center
+}
