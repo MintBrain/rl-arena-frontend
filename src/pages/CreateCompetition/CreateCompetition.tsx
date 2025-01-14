@@ -1,31 +1,31 @@
 import { Button, Form, message, Tabs, Typography } from "antd";
-import type {TabsProps} from "antd";
+import type { TabsProps } from "antd";
 import type { FormProviderProps } from "antd/lib/form/context.d.ts";
 import { useEffect, useState } from "react";
-import  GeneralInfo  from "./GeneralInfo.tsx";
-import  Description  from "./Description.tsx";
-import  Environment  from "./Environment.tsx";
-import  Publication  from "./Publication.tsx";
+import GeneralInfo from "./GeneralInfo.tsx";
+import Description from "./Description.tsx";
+import Environment from "./Environment.tsx";
+import Publication from "./Publication.tsx";
 import "./CreateCompetition.css";
 
 const items: TabsProps["items"] = [
   {
     label: <span className="tab-label">Общая информация</span>,
-    key: "generalInfo",
+    key: "generalInfo"
   },
   {
     label: <span className="tab-label">Описание</span>,
-    key: "description",
+    key: "description"
   },
   {
     label: <span className="tab-label">Окружение</span>,
-    key: "environment",
+    key: "environment"
   },
   {
     label: <span className="tab-label">Публикация</span>,
-    key: "publication",
+    key: "publication"
   }
-]
+];
 
 export type FieldType = {
   name?: string;
@@ -168,7 +168,7 @@ const CreateCompetition = () => {
 
 
   useEffect(() => {
-    form.setFieldsValue(mockData)
+    form.setFieldsValue(mockData);
 
   }, [form]);
 
@@ -182,7 +182,7 @@ const CreateCompetition = () => {
       case "description":
         return <Description form={form} />;
       case "environment":
-        return <Environment form={form}  />;
+        return <Environment form={form} />;
       default:
         return null;
     }
@@ -192,28 +192,31 @@ const CreateCompetition = () => {
     console.log(values);
     console.log(info);
     message.success("Форма отправлена!");
-  }
+  };
 
 
   return (
     <div className="create-competition-page w-full h-full flex justify-center items-center bg-background-primary">
       <Form.Provider onFormFinish={onFormFinish}>
-      <div className="flex justify-center flex-col max-w-[78.5%] self-start w-full">
-        <div className="flex flex-row mt-[16px] justify-between">
-        <Typography.Text className="text-left text-text opacity-85 text-xxl font-medium font-inter">
-          Создать соревнование
-        </Typography.Text>
-          <Button type="primary" htmlType="submit" onClick={() => {form.submit()}} className="w-[95px] rounded-[2px]">
-            Сохранить
-          </Button>
-        </div>
-        <Typography.Text className="text-left text-text opacity-85 text-sm font-default mt-[9px] mb-[16px]">
-          Проведите собственное соревнование на платформе RL Arena.
-        </Typography.Text>
+        <div className="flex justify-center flex-col max-w-[78.5%] self-start w-full">
+          <div className="flex flex-row mt-[16px] justify-between">
+            <Typography.Text className="text-left text-text opacity-85 text-xxl font-medium font-inter">
+              Создать соревнование
+            </Typography.Text>
+            <Button type="primary" htmlType="submit" onClick={() => {
+              form.submit();
+            }} className="w-[95px] rounded-[2px]">
+              Сохранить
+            </Button>
+          </div>
+          <Typography.Text className="text-left text-text opacity-85 text-sm font-default mt-[9px] mb-[16px]">
+            Проведите собственное соревнование на платформе RL Arena.
+          </Typography.Text>
 
-        <Tabs items={items} onChange={(activeKey) => setCurrentTab(activeKey)} tabBarGutter={0} defaultActiveKey={currentTab} />
-        {renderContent()}
-      </div>
+          <Tabs items={items} onChange={(activeKey) => setCurrentTab(activeKey)} tabBarGutter={0}
+                defaultActiveKey={currentTab} />
+          {renderContent()}
+        </div>
       </Form.Provider>
     </div>
   );
