@@ -41,8 +41,19 @@ const api = {
     return await axiosInstance.get("/api/users/me");
   },
 
-  async register(data: RegisterRequest): Promise<AxiosResponse<RegisterResponse>> {
-    return await axiosInstance.post("/api/register", data);
+  async register(data: RegisterRequest): Promise<AxiosResponse<LoginResponse>> {
+    // return await axiosInstance.post("/api/register", data);
+    const urlEncodedData = new URLSearchParams({
+      username: data.username,
+      email: data.email,
+      password: data.password,
+    });
+
+    return await axiosInstance.post("/api/users", urlEncodedData.toString(), {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
   },
 
   async resendRegistrationCode(data: ResendRegisterCodeRequest): Promise<AxiosResponse<void>> {

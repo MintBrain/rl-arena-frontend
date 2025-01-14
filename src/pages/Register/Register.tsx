@@ -32,15 +32,15 @@ const Register: React.FC = () => {
       const response = await api.register(values as RegisterRequest);
 
       if (response.status === 400) {
-        message.error("Ошибка регистрации");
-      } else if (response.status !== 201) {
+        message.error("Почта или имя пользователя уже заняты");
+      } else if (response.status !== 200) {
         message.error("Ошибка регистрации. Попробуйте еще.");
       } else {
         setCodePage(true);
       }
     } catch (error) {
       console.error(error);
-      message.error("Ошибка входа");
+      message.error("Ошибка регистрации");
     } finally {
       setLoading(false);
     }
@@ -57,10 +57,10 @@ const Register: React.FC = () => {
           layout="vertical"
           initialValues={{
             agreement: true,
-            username: "nickName",
+            username: "username",
             email: "1@1.ru",
-            password: "testPassword",
-            confirmPassword: "testPassword"
+            password: "password",
+            confirmPassword: "password"
           }}
           onFinish={onFinish}
           scrollToFirstError

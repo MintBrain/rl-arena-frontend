@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, Tag, Typography } from "antd";
 import { getTimeRemaining } from "../utils/timeFormat.ts";
+import { Link } from "react-router-dom";
 
 const { Meta } = Card;
 
@@ -37,7 +38,7 @@ const CompetitionCard: React.FC<CardProps> = ({ title, description, tags, reward
             }}
 
       >
-        <Meta style={{ marginBottom: 12 }} title={<div style={{ marginBottom: 4 }}>{title}</div>}
+        <Meta style={{ marginBottom: 12 }} title={<Link to="/competitions/1"><div style={{ marginBottom: 4 }}>{title}</div></Link>}
               description={description} />
         <div style={{}}>
           {tags && tags.map(tag => (

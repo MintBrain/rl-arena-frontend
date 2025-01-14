@@ -21,7 +21,8 @@
     }
 
     .button {
-        @apply w-fit px-[15px] py-[4px] rounded-[2px] font-bold text-sm font-default text-primary;
+        @apply w-fit px-[15px] py-[4px] rounded-[2px] font-bold text-sm font-default;
+        color: #40A9FF;
     }
 
     /* .ant-btn-color-dangerous */

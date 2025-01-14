@@ -3,8 +3,16 @@ import SettingsField from "./SettingsField.tsx";
 import SettingsNotification from "./SettingsNotification.tsx";
 import SettingsDeleteAccount from "./SettingsDeleteAccount.tsx";
 import "./Settings.css";
+import useStore from "../../hooks/useStore.hook.tsx";
+import { observer } from "mobx-react-lite";
 
-const Settings = () => {
+const Settings = observer(() => {
+  const { userStore } = useStore();
+
+  if (!userStore.userData) {
+    return null;
+  }
+
   return (
     <>
       <div className="settings-page settings-container">
@@ -22,7 +30,7 @@ const Settings = () => {
           <div className="block line-separator">
             <div className="flex flex-row max-w-[78.5%] w-full">
               <div className="flex flex-col w-[68.3%] pr-[100px]">
-                <SettingsField label={"Адрес электронной почты"} description={"test@email.com"}
+                <SettingsField label={"Адрес электронной почты"} description={userStore.userData.email}
                                buttonLabel={"Редактировать адрес"} />
                 <SettingsField label={"Номер телефона"}
                                description={"Ваш номер телефона не верифицирован.\n" +
@@ -58,6 +66,6 @@ const Settings = () => {
       </div>
     </>
   );
-};
+});
 
 export default Settings;

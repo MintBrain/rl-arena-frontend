@@ -52,11 +52,12 @@ const ConfirmCode: React.FC<Props> = ({ email, onReturn }) => {
     setLoading(true);
     try {
       const response = await api.checkRegistrationCode({ email, verificationCode: verificationCode! });
+
       if (response.status !== 200) {
         form.setFields([{ name: "verificationCode", errors: ["Неверный код подтверждения!"] }]);
       } else {
         message.success("Успешная регистрация!");
-        navigate("/");
+        navigate("/login");
       }
     } catch (error) {
       console.error(error);
