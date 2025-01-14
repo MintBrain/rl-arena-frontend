@@ -11,10 +11,10 @@ import { BrowserRouter } from "react-router-dom";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-    <DevSupport ComponentPreviews={ComponentPreviews}
-                useInitialHook={useInitial}>
-      <App />
-    </DevSupport>
+      <DevSupport ComponentPreviews={ComponentPreviews}
+                  useInitialHook={useInitial}>
+        <App />
+      </DevSupport>
     </BrowserRouter>
   </StrictMode>
 );

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Cookies } from "react-cookie";
 
 
 const axiosInstance = axios.create({
@@ -12,17 +13,20 @@ const axiosInstance = axios.create({
 // Optional: Add request/response interceptors
 axiosInstance.interceptors.request.use(
   (config) => {
-    // Handle token or custom headers here if needed
+    const cookie = (new Cookies).get("access_token");
+    if (cookie) {
+      config.headers["Authorization"] = `Bearer ${cookie}`;
+    }
     return config;
   },
-  (error) => Promise.reject(error)
+  // (error) => Promise.reject(error)
 );
 
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Handle errors (e.g., unauthorized, etc.)
-    return Promise.reject(error);
+    return error.response;
+    // return Promise.reject(error);
   }
 );
 

@@ -1,9 +1,14 @@
 import { Link } from "react-router-dom";
-import { Button, Divider, Layout } from "antd";
-import Icon from "@ant-design/icons";
+import { Button, Divider, Image, Layout, message } from "antd";
+import Icon, { LoginOutlined } from "@ant-design/icons";
 import { Settings, Search } from "@mui/icons-material";
 import type { GetProps } from "antd";
 import "../styles/Header.css";
+import useStore from "../hooks/useStore.hook.tsx";
+import React, { useCallback, useEffect } from "react";
+import { useCookies } from "react-cookie";
+import { getSnapshot } from "mobx-state-tree";
+import { observer } from "mobx-react-lite";
 
 type CustomIconComponentProps = GetProps<typeof Icon>;
 
@@ -33,7 +38,16 @@ const LogOutIcon = (props: Partial<CustomIconComponentProps>) => (
 );
 
 
-export const Header = () => {
+export const Header: React.FC = observer(() => {
+  const { userStore } = useStore();
+  const [, , deleteCookie] = useCookies(["access_token"]);
+
+  const onLogout = () => {
+    userStore.logout();
+    deleteCookie("access_token");
+    message.success("Вы успешно вышли из аккаунта.");
+  };
+
   return (
     <>
       <Layout.Header unselectable="on" style={{
@@ -45,19 +59,56 @@ export const Header = () => {
         alignItems: "center"
       }}>
         <Button type="text" icon={<Search />} className="header-button" />
-        <Link to="/settings" className="header-link">
-          <Button type="text" icon={<Settings />} className="header-button" />
-        </Link>
-        <Divider type="vertical" className="header-devider" />
 
-        <Link to="/profile" className="header-link">
-          <Button type="text" icon={<UserIcon />} className="header-button"
-                  style={{ width: "auto", marginLeft: 0 }}>Username</Button>
-        </Link>
-        <Divider type="vertical" className="header-devider" />
+        {userStore.isLoggedIn ?
+          <>
+            <Link to="/settings" className="header-link">
+              <Button type="text" icon={<Settings />} className="header-button" />
+            </Link>
 
-        <Button type="text" icon={<LogOutIcon />} className="header-button" style={{ marginLeft: 0 }} />
+            <Divider type="vertical" className="header-devider" />
+
+            <Link to="/profile" className="header-link">
+              <Button type="text"  className="header-button"
+                      style={{ width: "auto", marginLeft: 0 }}>
+                {userStore.userData?.profile_image && userStore.userData.profile_image !== "" ? (
+                  <img
+                    src={userStore.userData.profile_image}
+                    alt="Profile"
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                      marginRight: 8, // Add space between the image and username
+                    }}
+                  />
+                ) : (
+                  <UserIcon />
+                )}
+                {userStore.userData?.username}
+              </Button>
+            </Link>
+
+            <Divider type="vertical" className="header-devider" />
+
+            <Button type="text" icon={<LogOutIcon />} className="header-button" style={{ marginLeft: 0 }}
+                    onClick={onLogout} />
+          </>
+          :
+          <>
+            <Link to="/login" className="header-link">
+              <Button type="text" icon={<LoginOutlined />} className="header-button"
+                      style={{ width: "auto" }}>
+                Войти
+              </Button>
+            </Link>
+            {/*<Button type="text" icon={<LogOutIcon />} className="header-button" style={{ marginLeft: 0 }}*/}
+            {/*             onClick={() => console.log(getSnapshot(userStore))} />*/}
+          </>
+
+        }
       </Layout.Header>
     </>
   );
-};
+});

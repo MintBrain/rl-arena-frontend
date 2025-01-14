@@ -1,11 +1,11 @@
 export type LoginRequest = {
   username: string;
   password: string;
-  remember: boolean;
 }
 
 export type LoginResponse = {
   access_token: string;
+  token_type: string;
 }
 
 export type RegisterRequest = {
@@ -50,4 +50,15 @@ export type RestorePasswordNewPasswordRequest = {
   email: string;
   password: string;
   restoreToken: string;
+}
+
+export type GetMeResponse = {
+  id: number;
+  username: string;
+  email: string;
+  date_registered: string;
+  role: string;
+  profile_image: string;
+  country: string;
+  company: string | undefined;
 }

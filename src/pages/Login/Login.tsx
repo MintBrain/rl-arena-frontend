@@ -5,7 +5,9 @@ import type { FormProps } from "antd";
 import FormItemLabel from "../../components/FormItemLabel.tsx";
 import api from "../../api/service.api.ts";
 import { LoginRequest } from "../../types/api.ts";
+import useStore from "../../hooks/useStore.hook.tsx";
 import "../../styles/Form.css";
+import { useCookies } from "react-cookie";
 
 type FieldType = {
   username?: string;
@@ -17,6 +19,7 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const [, setCookie] = useCookies(["access_token"]);
 
   const onFormFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     setLoading(true);
@@ -28,6 +31,7 @@ function Login() {
       } else if (response.status !== 200) {
         message.error("Ошибка авторизации. Попробуйте еще.");
       } else {
+        setCookie("access_token", response.data.access_token, { maxAge: values.remember ? 15552000 : 0 }); // NOTE: 15552000=180*24*60*60 - 180 days
         message.success("Успешный вход!");
         navigate("/");
       }
@@ -53,7 +57,7 @@ function Login() {
         size="middle"
         className="form"
         layout="vertical"
-        initialValues={{ remember: true, username: "nickName", password: "testPassword" }}
+        initialValues={{ remember: true, username: "username", password: "password" }}
         onFinish={onFormFinish}
         onFinishFailed={onFormFinishFailed}
         requiredMark={false}

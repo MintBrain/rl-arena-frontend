@@ -13,15 +13,15 @@ function getItem(label: React.ReactNode, key: React.Key, icon?: React.ReactNode,
 
 const items: MenuItem[] = [
   getItem("Главная", "/", <HomeOutlined />),
-  getItem("Соревнования", "/competitions", <CarryOutOutlined />),
+  // getItem("Соревнования", "/competitions", <CarryOutOutlined />),
   getItem("Датасеты", "/datasets", <TableOutlined />),
-  getItem("Profile", "/profile"),
-  getItem("Register", "/register"),
-  getItem("Login", "/login"),
-  getItem("Restore", "/restore"),
-  getItem("Create Competition", "/create-competition"),
-  getItem("Competition", "/competitions/1"),
-  getItem("Settings", "/settings"),
+  // getItem("Profile", "/profile"),
+  // getItem("Register", "/register"),
+  // getItem("Login", "/login"),
+  // getItem("Restore", "/restore"),
+  // getItem("Create Competition", "/create-competition"),
+  // getItem("Competition", "/competitions/1"),
+  // getItem("Settings", "/settings"),
 ];
 
 const Navigation: React.FC = () => {

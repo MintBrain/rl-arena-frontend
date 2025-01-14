@@ -1,5 +1,6 @@
 import axiosInstance from "./axiosConfig.ts";
 import {
+  GetMeResponse,
   LoginRequest,
   LoginResponse,
   RegisterCodeRequest,
@@ -12,16 +13,32 @@ import {
   RestorePasswordEmailResponse, RestorePasswordNewPasswordRequest
 } from "../types/api.ts";
 import { AxiosResponse } from "axios";
-import { data } from "autoprefixer";
 
 
 const api = {
   async login(data: LoginRequest): Promise<AxiosResponse<LoginResponse>> {
-    return await axiosInstance.post("/api/login", data);
+    const urlEncodedData = new URLSearchParams({
+      grant_type: "",
+      username: data.username,
+      password: data.password,
+      scope: "",
+      client_id: "",
+      client_secret: "",
+    });
+
+    return await axiosInstance.post("/api/token", urlEncodedData.toString(), {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
   },
 
   async logout(): Promise<AxiosResponse<void>> {
-    return await axiosInstance.post("/api/logout", data);
+    return await axiosInstance.post("/api/logout");
+  },
+
+  async getMe(): Promise<AxiosResponse<GetMeResponse>> {
+    return await axiosInstance.get("/api/users/me");
   },
 
   async register(data: RegisterRequest): Promise<AxiosResponse<RegisterResponse>> {
