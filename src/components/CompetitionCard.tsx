@@ -40,9 +40,11 @@ const CompetitionCard: React.FC<CardProps> = ({ title, description, tags, reward
       >
         <Meta style={{ marginBottom: 12 }} title={<Link to="/competitions/1"><div style={{ marginBottom: 4 }}>{title}</div></Link>}
               description={description} />
-        <div style={{}}>
-          {tags && tags.map(tag => (
-            <Tag style={{
+        <div>
+          {tags && tags.map((tag, index) => (
+            <Tag
+              key={index.toString()}
+              style={{
               borderRadius: 12,
               height: 28,
               padding: "1px 12px 1px 12px",

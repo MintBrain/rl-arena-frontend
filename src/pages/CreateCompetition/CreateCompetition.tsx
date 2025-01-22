@@ -1,223 +1,196 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 import { Button, Form, message, Tabs, Typography } from "antd";
-import type { TabsProps } from "antd";
-import type { FormProviderProps } from "antd/lib/form/context.d.ts";
-import { useEffect, useState } from "react";
-import GeneralInfo from "./GeneralInfo.tsx";
-import Description from "./Description.tsx";
-import Environment from "./Environment.tsx";
-import Publication from "./Publication.tsx";
+import type { TabsProps, FormProps } from "antd";
+import GeneralInfo, { type GeneralInfoFieldType } from "./GeneralInfo.tsx";
+import Description, { type DescriptionFieldType } from "./Description.tsx";
+import Environment, { type EnvironmentFieldType } from "./Environment.tsx";
+import Publication, { type PublicationFieldType } from "./Publication.tsx";
+import api from "../../api/service.api.ts";
+import { CreateCompetitionRequest } from "../../types/api.ts";
 import "./CreateCompetition.css";
 
-const items: TabsProps["items"] = [
-  {
-    label: <span className="tab-label">Общая информация</span>,
-    key: "generalInfo"
-  },
-  {
-    label: <span className="tab-label">Описание</span>,
-    key: "description"
-  },
-  {
-    label: <span className="tab-label">Окружение</span>,
-    key: "environment"
-  },
-  {
-    label: <span className="tab-label">Публикация</span>,
-    key: "publication"
-  }
-];
 
-export type FieldType = {
-  name?: string;
-  description?: string;
-  url?: string;
-  competitionType?: string;
-  startDate?: string;
-  endDate?: string;
-  backgroundImage?: {
-    file: {
-      uid: string;
-    };
-    fileList: Array<{
-      uid: string;
-      lastModified: number;
-      lastModifiedDate: string;
-      name: string;
-      size: number;
-      type: string;
-      percent: number;
-      originFileObj: {
-        uid: string;
-      };
-    }>;
-  };
-  competitionDescription?: string;
-  detailedDescription?: string;
-  goals?: string;
-  rules?: string;
-  prizeInfo?: string;
-  documentation?: {
-    file: {
-      uid: string;
-    };
-    fileList: Array<{
-      uid: string;
-      lastModified: number;
-      lastModifiedDate: string;
-      name: string;
-      size: number;
-      type: string;
-      percent: number;
-      originFileObj: {
-        uid: string;
-      };
-    }>;
-  };
-  tags?: string[];
-  rlRepository?: string;
-  rlSolutionExtension?: string;
-  rlPublicFiles?: {
-    file: {
-      uid: string;
-    };
-    fileList: Array<{
-      uid: string;
-      lastModified: number;
-      lastModifiedDate: string;
-      name: string;
-      size: number;
-      type: string;
-      percent: number;
-      originFileObj: {
-        uid: string;
-      };
-    }>;
-  };
-  visibility?: string; // e.g., 'public' or 'private'
-  participation?: string; // e.g., 'everyone', 'byLink', 'manualApproval', 'emailRestriction'
-};
+type FieldType =
+  GeneralInfoFieldType &
+  DescriptionFieldType &
+  EnvironmentFieldType &
+  PublicationFieldType;
 
-const mockData: FieldType = {
-  competitionType: "RL",
-  tags: ["RL", "ML"],
-  visibility: "public",
-  participation: "everyone",
+
+const initialValues: Partial<FieldType> = {
+  // GeneralInfoFieldType
   name: "Название",
-  description: "Описание",
-  url: "example.com/competitions/shortLink",
-  // startDate: "2024-12-22T02:00:00.000Z",
-  // endDate: "2024-12-30T19:08:00.000Z",
-  backgroundImage: {
-    file: { uid: "rc-upload-1734886430430-11" },
-    fileList: [
-      {
-        uid: "rc-upload-1734886430430-11",
-        lastModified: 1734551472562,
-        lastModifiedDate: "2024-12-18T19:51:12.562Z",
-        name: "ScreenShot_2024-12-19_00-51-12_001.png",
-        size: 72416,
-        type: "image/png",
-        percent: 0,
-        originFileObj: { uid: "rc-upload-1734886430430-11" }
-      }
-    ]
-  },
-  competitionDescription: "Короткое описание",
-  detailedDescription: "Подробное описание",
-  goals: "Цели",
-  rules: "Правила",
+  subtitle: "Описание соревнования",
+  url: "competition-url",
+  competitionType: "RL",
+  startDate: dayjs(),
+  endDate: dayjs().add(7, "days"),
+
+  // DescriptionFieldType
+  shortDescription: "Краткое описание соревнования",
+  detailedDescription: "Подробное описание соревнования",
+  goals: "Цели соревнования",
+  rules: "Правила соревнования",
+  prizeAmount: 0,
   prizeInfo: "Информация о призах",
-  documentation: {
-    file: { uid: "rc-upload-1734886430430-29" },
-    fileList: [
-      {
-        uid: "rc-upload-1734886430430-29",
-        lastModified: 1734186462107,
-        lastModifiedDate: "2024-12-14T14:27:42.107Z",
-        name: "The PvZ1 Modding Info Doc.docx",
-        size: 21129264,
-        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        percent: 0,
-        originFileObj: { uid: "rc-upload-1734886430430-29" }
-      }
-    ]
-  },
-  rlRepository: "https://example.com/competitions/",
-  rlSolutionExtension: ".dat",
-  rlPublicFiles: {
-    file: { uid: "rc-upload-1734886430430-19" },
-    fileList: [
-      {
-        uid: "rc-upload-1734886430430-19",
-        lastModified: 1734515372378,
-        lastModifiedDate: "2024-12-18T09:49:32.378Z",
-        name: "doxygen_manual-1.12.0.pdf.zip",
-        size: 1512872,
-        type: "application/x-zip-compressed",
-        percent: 0,
-        originFileObj: { uid: "rc-upload-1734886430430-19" }
-      }
-    ]
-  }
+  tags: ["AI"],
+
+  // EnvironmentFieldType
+  rlRepository: "https://github.com/DenkingOfficial/cartpole-evaluation",
+  rlSolutionExtension: ".bin",
+  mlMetric: "accuracy",
+  mlTargetVariable: "target_variable",
+
+  // PublicationFieldType
+  visibility: "public",
+  participation: "everyone"
 };
 
 
 const CreateCompetition = () => {
   const [currentTab, setCurrentTab] = useState("generalInfo");
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<FieldType>();
+  const navigate = useNavigate();
 
+  const items: TabsProps["items"] = [
+    {
+      label: <span className="tab-label">Общая информация</span>,
+      key: "generalInfo",
+      children: <GeneralInfo />,
+      forceRender: true
+    },
+    {
+      label: <span className="tab-label">Описание</span>,
+      key: "description",
+      children: <Description />,
+      forceRender: true
+    },
+    {
+      label: <span className="tab-label">Окружение</span>,
+      key: "environment",
+      children: <Environment />,
+      forceRender: true
+    },
+    {
+      label: <span className="tab-label">Публикация</span>,
+      key: "publication",
+      children: <Publication />,
+      forceRender: true
+    }
+  ];
 
-  useEffect(() => {
-    form.setFieldsValue(mockData);
+  const onFormFinish: FormProps<FieldType>["onFinish"] = async (values) => {
+    try {
+      const competitionRequest: CreateCompetitionRequest = {
+        name: values.name,
+        subtitle: values.subtitle,
+        url: values.url,
+        competitionType: values.competitionType,
+        startDate: values.startDate.toISOString(),
+        endDate: values.endDate.toISOString(),
+        backgroundImage: values.backgroundImage?.file ?? null,
 
-  }, [form]);
+        shortDescription: values.shortDescription,
+        detailedDescription: values.detailedDescription,
+        goals: values.goals,
+        rules: values.rules,
+        prizeAmount: values.prizeAmount,
+        prizeInfo: values.prizeInfo || undefined,
+        documentation: values.documentation ? values.documentation.fileList.map((val) => val.originFileObj) : null,
 
+        tags: values.tags,
 
-  const renderContent = () => {
-    switch (currentTab) {
-      case "generalInfo":
-        return <GeneralInfo form={form} />;
-      case "publication":
-        return <Publication form={form} />;
-      case "description":
-        return <Description form={form} />;
-      case "environment":
-        return <Environment form={form} />;
-      default:
-        return null;
+        visibility: values.visibility,
+        participation: values.participation,
+
+        ...(values.competitionType === 'RL' && {
+          rlRepository: values.rlRepository,
+          rlSolutionExtension: values.rlSolutionExtension,
+          rlPublicFiles: values.rlPublicFiles.fileList? values.rlPublicFiles.fileList.map((val) => val.originFileObj) : null,
+        }),
+
+        ...(values.competitionType === 'ML' && {
+          mlMetric: values.mlMetric,
+          mlTargetVariable: values.mlTargetVariable,
+          mlPublicDataset: values.mlPublicDataset.file ?? null,
+          mlPrivateDataset: values.mlPrivateDataset.file ?? null,
+        }),
+      };
+
+      const response = await api.createCompetition(competitionRequest);
+
+      if (response.status === 401) {
+        message.error("Ошибка авторизации");
+      } else if (response.status !== 201) {
+        message.error("Ошибка создания соревнования");
+      } else {
+          message.success("Успешное создание соревнования!");
+          navigate(`/competitions/${response.data.url}`);
+      }
+    } catch (error) {
+      console.log(error);
+      message.error("Ошибка создания соревнования");
     }
   };
 
-  const onFormFinish: FormProviderProps["onFormFinish"] = (values, info) => {
+  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = async ({ values, errorFields }) => {
     console.log(values);
-    console.log(info);
-    message.success("Форма отправлена!");
+
+    if (errorFields.length > 0) {
+      const firstError = errorFields[0];
+      const fieldError = firstError.errors[0];
+      //
+      // const tab = getTabFromFieldName(fieldName);
+      //
+      // if (tab) {
+      //   setCurrentTab(tab); // Switch to the appropriate tab
+      // }
+
+      // form.scrollToField(fieldName, {
+      //   behavior: "smooth",
+      //   block: "center",
+      // });
+      message.error(fieldError);
+    }
   };
 
 
   return (
-    <div className="create-competition-page w-full h-full flex justify-center items-center bg-background-primary">
-      <Form.Provider onFormFinish={onFormFinish}>
-        <div className="flex justify-center flex-col max-w-[78.5%] self-start w-full">
-          <div className="flex flex-row mt-[16px] justify-between">
-            <Typography.Text className="text-left text-text opacity-85 text-xxl font-medium font-inter">
-              Создать соревнование
-            </Typography.Text>
-            <Button type="primary" htmlType="submit" onClick={() => {
-              form.submit();
-            }} className="w-[95px] rounded-[2px]">
-              Сохранить
-            </Button>
-          </div>
-          <Typography.Text className="text-left text-text opacity-85 text-sm font-default mt-[9px] mb-[16px]">
-            Проведите собственное соревнование на платформе RL Arena.
-          </Typography.Text>
 
-          <Tabs items={items} onChange={(activeKey) => setCurrentTab(activeKey)} tabBarGutter={0}
-                defaultActiveKey={currentTab} />
-          {renderContent()}
+    <div className="create-competition-page w-full h-full flex justify-center items-center bg-background-primary">
+      <div className="flex justify-center flex-col max-w-[78.5%] self-start w-full">
+        <div className="flex flex-row mt-[16px] justify-between">
+          <Typography.Text className="text-left text-text opacity-85 text-xxl font-medium font-inter">
+            Создать соревнование
+          </Typography.Text>
+          <Button type="primary" htmlType="button" className="w-[95px] rounded-[2px]" onClick={() => form.submit()}>
+            Сохранить
+          </Button>
         </div>
-      </Form.Provider>
+        <Typography.Text className="text-left text-text opacity-85 text-sm font-default mt-[9px] mb-[16px]">
+          Проведите собственное соревнование на платформе RL Arena.
+        </Typography.Text>
+        <Form form={form}
+              layout="vertical"
+              requiredMark={false}
+              onFinish={onFormFinish}
+              onFinishFailed={onFinishFailed}
+              initialValues={initialValues}
+          // initialValues={{
+          //   competitionType: "RL",
+          //   prizeAmount: 0,
+          //   tags: [],
+          //   visibility: "public",
+          //   participation: "everyone",
+          // }}
+        >
+          <Tabs items={items}
+                onChange={(activeKey) => setCurrentTab(activeKey)} tabBarGutter={0}
+                defaultActiveKey={currentTab} activeKey={currentTab} />
+        </Form>
+      </div>
     </div>
   );
 };

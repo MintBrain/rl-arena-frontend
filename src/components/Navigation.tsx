@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button, Layout, Menu, Typography } from "antd";
 import type { MenuProps } from "antd";
 import { CarryOutOutlined, HomeOutlined, MenuFoldOutlined, MenuUnfoldOutlined, TableOutlined } from "@ant-design/icons";
@@ -13,8 +13,8 @@ function getItem(label: React.ReactNode, key: React.Key, icon?: React.ReactNode,
 
 const items: MenuItem[] = [
   getItem("Главная", "/", <HomeOutlined />),
-  // getItem("Соревнования", "/competitions", <CarryOutOutlined />),
-  getItem("Датасеты", "/datasets", <TableOutlined />),
+  getItem("Соревнования", "/competitions", <CarryOutOutlined />),
+  getItem("Датасеты", "/datasets", <TableOutlined />)
   // getItem("Profile", "/profile"),
   // getItem("Register", "/register"),
   // getItem("Login", "/login"),
@@ -55,9 +55,11 @@ const Navigation: React.FC = () => {
               onClick={() => setCollapsed(!collapsed)}
               style={{ width: 64, height: 71 }} />
       {!collapsed &&
-        <Typography.Text className="text-second font-bold text-lg text-nowrap flex-nowrap" style={{ height: 74 }}>
-          RL Arena
-        </Typography.Text>}
+        <Link to="/">
+          <Typography.Text className="text-second font-bold text-lg text-nowrap flex-nowrap" style={{ height: 74 }}>
+            RL Arena
+          </Typography.Text>
+        </Link>}
 
       <Menu style={{ userSelect: "none" }} theme="dark" defaultSelectedKeys={["1"]} mode="inline" items={items}
             selectedKeys={[selectedKey]} onSelect={handleMenuSelect} />

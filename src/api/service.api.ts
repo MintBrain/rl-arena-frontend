@@ -72,6 +72,61 @@ const api = {
     });
   },
 
+  async createCompetition(data: CreateCompetitionRequest): Promise<AxiosResponse<CreateCompetitionResponse>> {
+    const formData = new FormData();
+
+    // Append regular fields
+    formData.append('name', data.name);
+    formData.append('subtitle', data.subtitle);
+    formData.append('url', data.url);
+    formData.append('competitionType', data.competitionType);
+    formData.append('startDate', data.startDate);
+    formData.append('endDate', data.endDate);
+    formData.append('shortDescription', data.shortDescription);
+    formData.append('detailedDescription', data.detailedDescription);
+    formData.append('goals', data.goals);
+    formData.append('rules', data.rules);
+    formData.append('prizeAmount', data.prizeAmount.toString());
+    formData.append('prizeInfo', data.prizeInfo || '');
+    formData.append('tags', data.tags.join(','));
+
+    // Append optional files
+    if (data.backgroundImage) {
+      formData.append('backgroundImage', data.backgroundImage);
+    }
+    if (data.documentation) {
+      data.documentation.forEach((file) => {
+        formData.append(`documentation`, file);
+      });
+    }
+    if (data.rlPublicFiles) {
+      data.rlPublicFiles.forEach((file) => {
+        formData.append(`rlPublicFiles`, file);
+      });
+    }
+    if (data.mlPublicDataset) {
+      formData.append('mlPublicDataset', data.mlPublicDataset);
+    }
+    if (data.mlPrivateDataset) {
+      formData.append('mlPrivateDataset', data.mlPrivateDataset);
+    }
+
+    // Append other fields
+    formData.append('rlRepository', data.rlRepository);
+    formData.append('rlSolutionExtension', data.rlSolutionExtension);
+    formData.append('mlMetric', data.mlMetric);
+    formData.append('mlTargetVariable', data.mlTargetVariable);
+    formData.append('visibility', data.visibility);
+    formData.append('participation', data.participation);
+
+
+      return await axiosInstance.post('/api/competition', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  },
+
   async resendRegistrationCode(data: ResendRegisterCodeRequest): Promise<AxiosResponse<void>> {
     return await axiosInstance.post("/api/register/resendCode", data);
   },
