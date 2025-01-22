@@ -17,6 +17,7 @@ import Competition from "./pages/Competition/Competition.tsx";
 import Settings from "./pages/Settings/Settings.tsx";
 import { CookiesProvider } from "react-cookie";
 import AuthCheck from "./components/AuthCheck.tsx";
+import Agreement from "./pages/Agreement/Agreement.tsx";
 // import "./App.css";
 // TODO: Install @types/dayjs ?
 const { Content } = Layout;
@@ -42,6 +43,7 @@ function App() {
                 <Route path="create-competition" element={<CreateCompetition />} />
                 <Route path="competitions/:id" element={<Competition />} />
                 <Route path="settings" element={<Settings />} />
+                <Route path="agreement" element={<Agreement />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Content>

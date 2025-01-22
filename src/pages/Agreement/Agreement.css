@@ -1,0 +1,7 @@
+.agreement-page {
+    @apply w-full h-full flex justify-center items-center bg-gray-100;
+}
+
+.agreement-container {
+    @apply bg-white p-6 rounded-lg shadow-md flex flex-col overflow-auto h-[90%];
+}

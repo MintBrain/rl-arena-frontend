@@ -164,8 +164,8 @@ const Register: React.FC = () => {
               }
             ]}
           >
-            <Checkbox name="agreement">
-              Я принимаю условия <Link to="/agreement">пользовательского соглашения</Link>
+            <Checkbox name="agreement" className="select-none">
+              Я принимаю условия <Link to="/agreement" className="text-accentColor">пользовательского соглашения</Link>
             </Checkbox>
           </Form.Item>
 
