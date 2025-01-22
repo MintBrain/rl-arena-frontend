@@ -4,9 +4,11 @@ import ProfileCompetitions from "./ProfileCompetitions.tsx";
 import dayjs from "dayjs";
 import ProfileStatistics from "./ProfileStatistics.tsx";
 import useStore from "../../hooks/useStore.hook.tsx";
-// import { useNavigate } from "react-router-dom";
-// import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
+import { LoadingOutlined } from "@ant-design/icons";
+import { message, type UploadProps } from "antd";
+import api from "../../api/service.api.ts";
 
 
 const competitionData =
@@ -29,28 +31,42 @@ const statisticsData = {
 
 const Profile = observer(() => {
   const { userStore } = useStore();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (!userStore.isLoggedIn) {
-  //     navigate("/login");
-  //   }
-  // }, [userStore.isLoggedIn, navigate]); // Dependency array ensures it runs when `isLoggedIn` changes
-
-  if (!userStore.isLoggedIn) {
-    // Optionally, return null or a placeholder while navigating
-    return null;
+  if (!userStore.isFetched) {
+    return <LoadingOutlined className="text-[40px]" />;
   }
 
-  if (!userStore.userData) {
-    return null;
+  if (!userStore.isLoggedIn || !userStore.userData) {
+    return <>{navigate('/login')}</>;
   }
+
+  const onProfileImageUpload: UploadProps['customRequest']  = async ({ file, onSuccess,  }) => {
+    try {
+      onSuccess?.("ok");
+      console.log(file);
+
+      const response = await api.updateUser({profile_image: file as File});
+      if (response.status == 200) {
+        userStore.setFetched(false);
+        message.success("Изображение профиля успешно обновлено!")
+      } else {
+        message.error("Произошла ошибка при загрузке изображения.");
+      }
+    } catch (error) {
+      console.log(error);
+      message.error("Произошла ошибка при загрузке изображения.");
+    }
+  };
 
   return (
   <>
     <div className="flex flex-col self-start max-w-full items-center justify-center bg-background-primary h-full">
-      <ProfileHeader username={userStore.userData.username} fullName="Имя Фамилия" registrationDate={dayjs(userStore.userData.date_registered)}
-                     lastLoginDate={dayjs()} profileImage={userStore.userData.profile_image} />
+      <ProfileHeader username={userStore.userData.username} fullName="Имя Фамилия"
+                     registrationDate={dayjs(userStore.userData.date_registered)}
+                     lastLoginDate={dayjs()}
+                     profileImage={userStore.userData.profile_image}
+                     handleUpload={onProfileImageUpload}/>
       <ProfileDescription
         description={descriptionData} />
       <ProfileCompetitions competitions={Array(6).fill(competitionData)} />

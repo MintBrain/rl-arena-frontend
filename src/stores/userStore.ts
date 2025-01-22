@@ -3,6 +3,7 @@ import { GetMeResponse } from "../types/api.ts";
 
 const UserStore = types
   .model("UserStore", {
+    isFetched: types.boolean,
     isLoggedIn: types.boolean,
     userData: types.maybeNull(
       types.model({
@@ -21,10 +22,14 @@ const UserStore = types
     setUserData(userData: GetMeResponse) {
       self.userData = userData;
       self.isLoggedIn = true;
+      self.isFetched = true;
     },
     logout() {
       self.userData = null;
       self.isLoggedIn = false;
+    },
+    setFetched(state: boolean) {
+      self.isFetched = state;
     },
   }));
 

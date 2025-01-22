@@ -1,16 +1,16 @@
 import axiosInstance from "./axiosConfig.ts";
 import {
+  CreateCompetitionRequest, CreateCompetitionResponse,
   GetMeResponse,
   LoginRequest,
   LoginResponse,
   RegisterCodeRequest,
   RegisterRequest,
-  RegisterResponse,
   ResendRegisterCodeRequest,
   RestorePasswordCodeRequest,
   RestorePasswordCodeResendRequest,
   RestorePasswordEmailRequest,
-  RestorePasswordEmailResponse, RestorePasswordNewPasswordRequest
+  RestorePasswordEmailResponse, RestorePasswordNewPasswordRequest, UpdateUserRequest
 } from "../types/api.ts";
 import { AxiosResponse } from "axios";
 
@@ -42,7 +42,6 @@ const api = {
   },
 
   async register(data: RegisterRequest): Promise<AxiosResponse<LoginResponse>> {
-    // return await axiosInstance.post("/api/register", data);
     const urlEncodedData = new URLSearchParams({
       username: data.username,
       email: data.email,
@@ -52,6 +51,23 @@ const api = {
     return await axiosInstance.post("/api/users", urlEncodedData.toString(), {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+  },
+
+  async updateUser(data: UpdateUserRequest): Promise<AxiosResponse<void>> {
+    const formData = new FormData();
+
+    if (data.username) formData.append("username", data.username);
+    if (data.email) formData.append("email", data.email);
+    if (data.password) formData.append("password", data.password);
+    if (data.country) formData.append("country", data.country);
+    if (data.company) formData.append("company", data.company);
+    if (data.profile_image) formData.append("profile_image", data.profile_image);
+
+    return await axiosInstance.patch("/api/users/me", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
       },
     });
   },

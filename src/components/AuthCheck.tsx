@@ -4,8 +4,9 @@ import { message } from "antd";
 import api from "../api/service.api.ts";
 import { useCookies } from "react-cookie";
 import { getSnapshot } from "mobx-state-tree";
+import { observer } from "mobx-react-lite";
 
-const AuthCheck: React.FC = () => {
+const AuthCheck: React.FC = observer(() => {
   const { userStore } = useStore();
   const [cookies, , removeCookie] = useCookies(["access_token"]);
 
@@ -14,7 +15,7 @@ const AuthCheck: React.FC = () => {
       try {
         const token = cookies["access_token"];
         if (!token) {
-          userStore.logout(); // Ensure the user is logged out if no token
+          userStore.logout();
           return;
         }
 
@@ -31,13 +32,15 @@ const AuthCheck: React.FC = () => {
         console.error("AuthCheck error: ", error);
         userStore.logout();
         message.error("Ошибка авторизации. Пожалуйста, войдите снова.");
+      } finally {
+        userStore.setFetched(true);
       }
     };
 
     checkAuth();
-  }, [cookies]);
+  }, [cookies, userStore.isFetched]);
 
   return null; // This component does not render anything
-};
+});
 
 export default AuthCheck;
