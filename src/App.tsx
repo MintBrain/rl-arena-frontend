@@ -41,7 +41,7 @@ function App() {
                 <Route path="datasets" element={<Datasets />} />
                 <Route path="profile" element={<Profile />} />
                 <Route path="create-competition" element={<CreateCompetition />} />
-                <Route path="competitions/:id" element={<Competition />} />
+                <Route path="competitions/:url" element={<Competition />} />
                 <Route path="settings" element={<Settings />} />
                 <Route path="agreement" element={<Agreement />} />
                 <Route path="*" element={<NotFound />} />
