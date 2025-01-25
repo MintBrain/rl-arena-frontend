@@ -1,12 +1,13 @@
-
 /*.tab-nav .ant-tabs-nav::before {*/
 /*    border-bottom: 2px solid #ff0000;*/
 /*    width: 100vw;*/
 /*}*/
 
 
-.create-competition-page .tab-label {
-    width: 152px;
-    display: inline-block;
-    text-align: center;
+.create-competition-page {
+    .tab-label {
+        width: auto;
+        display: inline-block;
+        text-align: center;
+    }
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { Button, Form, message, Tabs, Typography } from "antd";
@@ -10,6 +10,9 @@ import Publication, { type PublicationFieldType } from "./Publication.tsx";
 import api from "../../api/service.api.ts";
 import { CreateCompetitionRequest } from "../../types/api.ts";
 import "./CreateCompetition.css";
+import { LoadingOutlined } from "@ant-design/icons";
+import useStore from "../../hooks/useStore.hook.tsx";
+import { observer } from "mobx-react-lite";
 
 
 type FieldType =
@@ -21,21 +24,22 @@ type FieldType =
 
 const initialValues: Partial<FieldType> = {
   // GeneralInfoFieldType
-  name: "Название",
-  subtitle: "Описание соревнования",
-  url: "competition-url",
-  competitionType: "RL",
+  name: "Решение проблемы булочки с шоколадом\\изюмом",
+  subtitle: "Распознать по фото с какой начинкой булочка",
+  url: "bake-url",
+  competitionType: "ML",
   startDate: dayjs(),
   endDate: dayjs().add(7, "days"),
 
   // DescriptionFieldType
-  shortDescription: "Краткое описание соревнования",
-  detailedDescription: "Подробное описание соревнования",
-  goals: "Цели соревнования",
-  rules: "Правила соревнования",
-  prizeAmount: 0,
-  prizeInfo: "Информация о призах",
-  tags: ["AI"],
+  shortDescription: "Создать ML модель которая по фото распознает с какой начинкой булочка",
+  detailedDescription: "Создать ML модель которая по фото распознает с какой начинкой булочка\n" +
+    "начальный датасет - 100 фото",
+  goals: "Помочь пользователю не ошибиться в выборе выпечки",
+  rules: "Нет",
+  prizeAmount: 20000,
+  prizeInfo: "Денежный приз + годовой запас выпечки",
+  tags: ["AI", "ML"],
 
   // EnvironmentFieldType
   rlRepository: "https://github.com/DenkingOfficial/cartpole-evaluation",
@@ -49,10 +53,11 @@ const initialValues: Partial<FieldType> = {
 };
 
 
-const CreateCompetition = () => {
+const CreateCompetition = observer(() => {
   const [currentTab, setCurrentTab] = useState("generalInfo");
   const [form] = Form.useForm<FieldType>();
   const navigate = useNavigate();
+  const { userStore } = useStore();
 
   const items: TabsProps["items"] = [
     {
@@ -105,18 +110,18 @@ const CreateCompetition = () => {
         visibility: values.visibility,
         participation: values.participation,
 
-        ...(values.competitionType === 'RL' && {
+        ...(values.competitionType === "RL" && {
           rlRepository: values.rlRepository,
           rlSolutionExtension: values.rlSolutionExtension,
-          rlPublicFiles: values.rlPublicFiles.fileList? values.rlPublicFiles.fileList.map((val) => val.originFileObj) : null,
+          rlPublicFiles: values.rlPublicFiles.fileList ? values.rlPublicFiles.fileList.map((val) => val.originFileObj) : null
         }),
 
-        ...(values.competitionType === 'ML' && {
+        ...(values.competitionType === "ML" && {
           mlMetric: values.mlMetric,
           mlTargetVariable: values.mlTargetVariable,
           mlPublicDataset: values.mlPublicDataset.file ?? null,
-          mlPrivateDataset: values.mlPrivateDataset.file ?? null,
-        }),
+          mlPrivateDataset: values.mlPrivateDataset.file ?? null
+        })
       };
 
       const response = await api.createCompetition(competitionRequest);
@@ -126,8 +131,8 @@ const CreateCompetition = () => {
       } else if (response.status !== 201) {
         message.error("Ошибка создания соревнования");
       } else {
-          message.success("Успешное создание соревнования!");
-          navigate(`/competitions/${response.data.url}`);
+        message.success("Успешное создание соревнования!");
+        navigate(`/competitions/${response.data.url}`);
       }
     } catch (error) {
       console.log(error);
@@ -156,6 +161,19 @@ const CreateCompetition = () => {
     }
   };
 
+  if (!userStore.isFetched) {
+    return <LoadingOutlined className="text-[40px]" />;
+  }
+
+  useEffect(() => {
+    if (userStore.isFetched && !userStore.isLoggedIn) {
+      navigate(`/login`);
+    }
+  }, [navigate, userStore.isFetched, userStore.isLoggedIn]);
+
+  // if (!userStore.isLoggedIn || !userStore.userData) {
+  //   return <>{navigate('/login')}</>;
+  // }
 
   return (
 
@@ -187,12 +205,14 @@ const CreateCompetition = () => {
           // }}
         >
           <Tabs items={items}
-                onChange={(activeKey) => setCurrentTab(activeKey)} tabBarGutter={0}
-                defaultActiveKey={currentTab} activeKey={currentTab} />
+                tabBarGutter={50}
+                onChange={(activeKey) => setCurrentTab(activeKey)}
+                defaultActiveKey={currentTab}
+                activeKey={currentTab} />
         </Form>
       </div>
     </div>
   );
-};
+});
 
 export default CreateCompetition;
