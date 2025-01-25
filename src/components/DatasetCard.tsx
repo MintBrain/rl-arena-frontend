@@ -13,7 +13,10 @@ interface CardProps {
 }
 
 
+
 const DatasetCard: React.FC<CardProps> = ({ title, description, tags, size }) => {
+  const fileUrl = "Removed";
+
   return (
     <div style={{ width: 300, height: 364 }}>
       <Card cover={<img
@@ -25,7 +28,18 @@ const DatasetCard: React.FC<CardProps> = ({ title, description, tags, size }) =>
               body: { padding: "16px" }
             }}
       >
-        <Meta style={{ marginBottom: 12 }} title={<div style={{ marginBottom: 4 }}>{title}</div>}
+        <Meta style={{ marginBottom: 12 }} title={
+          <a
+            href={fileUrl}
+            download
+            style={{
+              textDecoration: "none",
+              color: "inherit"
+            }}
+          >
+            <div style={{ marginBottom: 4 }}>{title}</div>
+          </a>
+        }
               description={description} />
         <div style={{}}>
           {tags && tags.map(tag => (
@@ -48,7 +62,7 @@ const DatasetCard: React.FC<CardProps> = ({ title, description, tags, size }) =>
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        background: '#fff',
+        background: "#fff"
       }}>
         <Typography.Text style={{ fontWeight: 500 }}>{formatFileSize(size || 0)}</Typography.Text>
         {/*<Typography.Text>{timeRemaining}</Typography.Text>*/}
