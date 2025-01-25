@@ -55,6 +55,7 @@ export type RestorePasswordNewPasswordRequest = {
 export type GetMeResponse = {
   id: number;
   username: string;
+  fullname: string;
   email: string;
   date_registered: string;
   role: string;
@@ -109,9 +110,16 @@ export type CreateCompetitionResponse = {
   url: string;
 }
 
-export type Competition = {
+export type User = {
   id: number;
-  author_id: number;
+  username: string;
+  fullName: string;
+  profileImage: string;
+}
+
+export type CompetitionData = {
+  id: number;
+  author: User;
 
   name: string;
   subtitle: string;
@@ -130,15 +138,16 @@ export type Competition = {
   documentation?: string[]; // Urls list
   tags: string[];
 
-  rlRepository: string; // Site url
-  rlSolutionExtension: string;
-  rlPublicFiles: string[]; // Urls list
+  rlRepository?: string; // Site url
+  rlSolutionExtension?: string;
+  rlPublicFiles?: string[]; // Urls list
 
-  mlMetric: string;
-  mlTargetVariable: string;
-  mlPublicDataset: string; // Url
-  mlPrivateDataset: string[]; // Url
+  mlMetric?: string;
+  mlTargetVariable?: string;
+  mlPublicDataset?: string; // Url
+  mlPrivateDataset?: string[]; // Url
 
   visibility: string;
   participation: string;
+  creationDate: string;
 }

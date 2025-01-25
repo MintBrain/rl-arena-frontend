@@ -56,7 +56,7 @@ function Login() {
         size="middle"
         className="form"
         layout="vertical"
-        initialValues={{ remember: true, username: "username", password: "password" }}
+        initialValues={{ remember: true, username: "maxim", password: "password" }}
         onFinish={onFormFinish}
         onFinishFailed={onFormFinishFailed}
         requiredMark={false}

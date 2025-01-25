@@ -34,9 +34,8 @@ const CardWheel: React.FC<Props> = ({ title, items, gutter = 24 }) => {
     };
   }, [gutter]);
 
-
   return (
-    <div ref={containerRef} style={{ padding: 24 }}>
+    <div className="flex flex-col" ref={containerRef} style={{ padding: 24 }}>
       <div style={{ display: "flex", justifyContent: "space-between", paddingBottom: 24 }}>
         <Typography.Text className="text-left text-textSecondary font-semibold text-lg">
           {title}
@@ -46,6 +45,7 @@ const CardWheel: React.FC<Props> = ({ title, items, gutter = 24 }) => {
           Перейти ко всем <RightOutlined />
         </Link>
       </div>
+
       <Row gutter={gutter} justify="start" align="middle" style={{ width: "100%" }}>
         {items.slice(0, Math.max(1, visibleCount)).map((item, index) => (
           <Col

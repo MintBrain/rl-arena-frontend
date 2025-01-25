@@ -9,6 +9,7 @@ const UserStore = types
       types.model({
         id: types.number,
         username: types.string,
+        fullname: types.string,
         email: types.string,
         date_registered: types.string,
         role: types.string,

@@ -4,7 +4,7 @@ import type { MenuProps } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import type { GetProps } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 type SearchProps = GetProps<typeof Input.Search>;
 
@@ -13,7 +13,6 @@ const MenuItems = [{ label: "Все соревнования", key: "1" }, { lab
 
 const MainHeader = () => {
   const [selectedItem, setSelectedItem] = useState("1");
-  const navigate = useNavigate();
 
   const handleOnSearch: SearchProps["onSearch"] = (value, _e, info) => {
     console.log(info?.source, value);
@@ -32,19 +31,19 @@ const MainHeader = () => {
       flexDirection: "column",
       justifyContent: "normal",
       padding: "16px 24px 20px 24px",
-      background: "#fff",
+      background: "#fff"
     }}>
       <BreadcrumbNav />
       <div style={{ display: "flex", justifyContent: "space-between", marginTop: 8 }}>
-        <Button onClick={() => navigate("/create-competition")} className="mr-[12px] bg-accentColor text-second">
+        <Link to="/create-competition"><Button onClick={() => null} className="mr-[12px] bg-accentColor text-second">
           Создать соревнование
-        </Button>
-        <Dropdown trigger={['click']} menu={{
+        </Button> </Link>
+        <Dropdown trigger={["click"]} menu={{
           items: MenuItems,
           selectable: true,
           defaultSelectedKeys: ["1"],
           selectedKeys: [selectedItem],
-          onClick: handleMenuClick,
+          onClick: handleMenuClick
 
         }}>
           <Button style={{ width: 220 }}>

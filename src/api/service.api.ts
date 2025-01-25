@@ -1,5 +1,6 @@
 import axiosInstance from "./axiosConfig.ts";
 import {
+  CompetitionData,
   CreateCompetitionRequest, CreateCompetitionResponse,
   GetMeResponse,
   LoginRequest,
@@ -23,13 +24,13 @@ const api = {
       password: data.password,
       scope: "",
       client_id: "",
-      client_secret: "",
+      client_secret: ""
     });
 
     return await axiosInstance.post("/api/token", urlEncodedData.toString(), {
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
     });
   },
 
@@ -45,13 +46,13 @@ const api = {
     const urlEncodedData = new URLSearchParams({
       username: data.username,
       email: data.email,
-      password: data.password,
+      password: data.password
     });
 
     return await axiosInstance.post("/api/users", urlEncodedData.toString(), {
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
     });
   },
 
@@ -67,8 +68,8 @@ const api = {
 
     return await axiosInstance.patch("/api/users/me", formData, {
       headers: {
-        "Content-Type": "multipart/form-data",
-      },
+        "Content-Type": "multipart/form-data"
+      }
     });
   },
 
@@ -76,23 +77,23 @@ const api = {
     const formData = new FormData();
 
     // Append regular fields
-    formData.append('name', data.name);
-    formData.append('subtitle', data.subtitle);
-    formData.append('url', data.url);
-    formData.append('competitionType', data.competitionType);
-    formData.append('startDate', data.startDate);
-    formData.append('endDate', data.endDate);
-    formData.append('shortDescription', data.shortDescription);
-    formData.append('detailedDescription', data.detailedDescription);
-    formData.append('goals', data.goals);
-    formData.append('rules', data.rules);
-    formData.append('prizeAmount', data.prizeAmount.toString());
-    formData.append('prizeInfo', data.prizeInfo || '');
-    formData.append('tags', data.tags.join(','));
+    formData.append("name", data.name);
+    formData.append("subtitle", data.subtitle);
+    formData.append("url", data.url);
+    formData.append("competitionType", data.competitionType);
+    formData.append("startDate", data.startDate);
+    formData.append("endDate", data.endDate);
+    formData.append("shortDescription", data.shortDescription);
+    formData.append("detailedDescription", data.detailedDescription);
+    formData.append("goals", data.goals);
+    formData.append("rules", data.rules);
+    formData.append("prizeAmount", data.prizeAmount.toString());
+    formData.append("prizeInfo", data.prizeInfo || "");
+    formData.append("tags", data.tags.join(","));
 
     // Append optional files
     if (data.backgroundImage) {
-      formData.append('backgroundImage', data.backgroundImage);
+      formData.append("backgroundImage", data.backgroundImage);
     }
     if (data.documentation) {
       data.documentation.forEach((file) => {
@@ -105,26 +106,36 @@ const api = {
       });
     }
     if (data.mlPublicDataset) {
-      formData.append('mlPublicDataset', data.mlPublicDataset);
+      formData.append("mlPublicDataset", data.mlPublicDataset);
     }
     if (data.mlPrivateDataset) {
-      formData.append('mlPrivateDataset', data.mlPrivateDataset);
+      formData.append("mlPrivateDataset", data.mlPrivateDataset);
     }
 
     // Append other fields
-    formData.append('rlRepository', data.rlRepository);
-    formData.append('rlSolutionExtension', data.rlSolutionExtension);
-    formData.append('mlMetric', data.mlMetric);
-    formData.append('mlTargetVariable', data.mlTargetVariable);
-    formData.append('visibility', data.visibility);
-    formData.append('participation', data.participation);
+    formData.append("rlRepository", data.rlRepository);
+    formData.append("rlSolutionExtension", data.rlSolutionExtension);
+    formData.append("mlMetric", data.mlMetric);
+    formData.append("mlTargetVariable", data.mlTargetVariable);
+    formData.append("visibility", data.visibility);
+    formData.append("participation", data.participation);
 
 
-      return await axiosInstance.post('/api/competition', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+    return await axiosInstance.post("/api/competition", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    });
+  },
+
+  async getCompetition(url: string): Promise<AxiosResponse<CompetitionData>> {
+    return await axiosInstance.get("/api/competition", {
+      params: { url }
+    });
+  },
+
+  async getAllCompetitions(): Promise<AxiosResponse<CompetitionData[]>> {
+    return await axiosInstance.get("/api/competitions");
   },
 
   async resendRegistrationCode(data: ResendRegisterCodeRequest): Promise<AxiosResponse<void>> {
@@ -149,9 +160,9 @@ const api = {
 
   async restorePasswordNewPassword(data: RestorePasswordNewPasswordRequest): Promise<AxiosResponse<void>> {
     return await axiosInstance.post("/api/restore/password", data);
-  },
+  }
 
 
-}
+};
 
 export default api;

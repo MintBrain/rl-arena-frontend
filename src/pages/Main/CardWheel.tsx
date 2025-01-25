@@ -46,8 +46,8 @@ const CardWheel: React.FC<Props> = ({ title, items, gutter = 24 }) => {
           Перейти ко всем <RightOutlined />
         </Link>
       </div>
-      <Row gutter={gutter} justify="start" align="middle" style={{ width: "100%" }}>
-        {items.slice(0, Math.max(1, visibleCount)).map((item, index) => (
+      <Row gutter={gutter} justify="start" align="middle" style={{ width: "100%" }} wrap={false}>
+        {items.slice(0, Math.max(1, visibleCount + 1)).map((item, index) => (
           <Col
             key={index}
             ref={index === 0 ? cardRef : undefined} // Assign ref to the first visible card
