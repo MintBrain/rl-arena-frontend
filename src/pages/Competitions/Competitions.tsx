@@ -1,17 +1,14 @@
-import CompetitionCard from "../../components/CompetitionCard.tsx";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Competitions = () => {
-  return (
-    <>
-      <CompetitionCard title="Заголовок соревнования"
-                       description="Какое-то краткое описание карточки,
-                                    какое-то краткое описание карточки,
-                                    какое-то краткое описание карточки."
-                       tags={["RL", "Fruits", "Fruits"]}
-                       reward={1000}
-                       deadline={Date.now() + 88600 * 1000} />
-    </>
-  );
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate("/");
+  }, [navigate]);
+
+  return null;
 };
 
 export default Competitions;
