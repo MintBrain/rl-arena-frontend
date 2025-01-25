@@ -11,12 +11,20 @@ interface Props {
   registrationDate: dayjs.Dayjs;
   lastLoginDate: dayjs.Dayjs;
   profileImage: string;
-  handleUpload: UploadProps['customRequest'];
+  handleUpload: UploadProps["customRequest"];
 }
 
-const ProfileHeader: React.FC<Props> = ({ username, fullName, registrationDate, lastLoginDate, profileImage, handleUpload }) => {
+const ProfileHeader: React.FC<Props> = ({
+                                          username,
+                                          fullName,
+                                          registrationDate,
+                                          lastLoginDate,
+                                          profileImage,
+                                          handleUpload
+                                        }) => {
   return (
-    <div style={{ borderBottom: "1px solid #D6dce5", width: "100%" }}>
+    <div style={{ borderBottom: "1px solid #D6dce5", width: "100%" }}
+         className="flex flex-col items-start self-start justify-start">
       <div className=" w-full max-w-[78.5%]" style={{ padding: "30px 0 37px 0", margin: "0 auto" }}>
         <div className="flex flex-row justify-start w-full">
           <div className="relative inline-block group">
@@ -41,10 +49,18 @@ const ProfileHeader: React.FC<Props> = ({ username, fullName, registrationDate, 
             justifyContent: "space-evenly",
             rowGap: 17,
             marginLeft: 42,
-            marginRight: 42
+            marginRight: 175
           }}>
-            <Typography.Text className="text-sm">{username}</Typography.Text>
-            <Typography.Text className="font-semibold text-lg">{fullName}</Typography.Text>
+            {fullName ?
+              <>
+                <Typography.Text className="text-sm">{username}</Typography.Text>
+                <Typography.Text className="font-semibold text-lg">{fullName}</Typography.Text>
+              </> :
+              <>
+                <Typography.Text className="text-sm"></Typography.Text>
+                <Typography.Text className="font-semibold text-lg">{username}</Typography.Text>
+              </>
+            }
             <Typography.Text className="text-sm">присоединился {registrationDate.format("DD.MM.YYYY")} · был в
               сети {lastLoginDate.format("DD.MM.YYYY")}{/* дней назад*/}</Typography.Text>
           </div>
