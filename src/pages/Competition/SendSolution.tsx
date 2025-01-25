@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Typography, Upload, Space, Spin, message } from "antd";
-import { UploadOutlined, LoadingOutlined } from '@ant-design/icons';
+import { UploadOutlined, LoadingOutlined } from "@ant-design/icons";
 import { CheckCircleOutlined } from "@mui/icons-material";
 
 const { Text, Title } = Typography;
 
+interface Props {
+  callback: () => void;
+  callback2: () => void;
+  isParticipating?: boolean;
+}
 
-const SendSolution: React.FC = () => {
+const SendSolution: React.FC<Props> = ({ callback, callback2, isParticipating }) => {
   const [fileName, setFileName] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
@@ -16,9 +21,15 @@ const SendSolution: React.FC = () => {
     setIsUploaded(false); // Reset if re-uploading
   };
 
+  useEffect(() => {
+    if (isParticipating === false) {
+      callback2();
+    }
+  }, [isParticipating, callback2]);
+
   const handleUpload = async () => {
     if (!fileName) {
-      message.warning('Please select a file before uploading.');
+      message.warning("Please select a file before uploading.");
       return;
     }
     setIsUploading(true);
@@ -28,19 +39,21 @@ const SendSolution: React.FC = () => {
 
     setIsUploading(false);
     setIsUploaded(true);
-    message.success('File uploaded successfully!');
+    message.success("File uploaded successfully!");
+    callback();
   };
 
   return (
     <>
-      <div style={{ padding: '20px', backgroundColor: '#fff', borderRadius: '8px', maxWidth: '400px' }}>
-        <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+      <div style={{ padding: "20px", backgroundColor: "#fff", borderRadius: "8px", maxWidth: "400px" }}>
+        <Space direction="vertical" size="middle" style={{ width: "100%" }}>
           <Title level={5}>Загрузить результат</Title>
 
           {/* Initial state: File selection */}
           {!isUploading && !isUploaded && (
-            <Space direction="vertical" size="small" style={{ width: '100%' }}>
+            <Space direction="vertical" size="small" style={{ width: "100%" }}>
               <Upload
+                accept=".bin, .zip, .rar, .7z"
                 beforeUpload={() => false} // Prevent default upload
                 onChange={handleFileChange}
                 showUploadList={false} // Hide default file list
@@ -69,9 +82,13 @@ const SendSolution: React.FC = () => {
           {/* Uploaded state */}
           {isUploaded && (
             <Space direction="vertical" size="small" align="center">
-              <CheckCircleOutlined style={{ fontSize: 24, color: 'green' }} />
+              <CheckCircleOutlined style={{ fontSize: 24, color: "green" }} />
               <Text type="success">File uploaded successfully!</Text>
-              <Button onClick={() => setFileName(null)}>Upload Another File</Button>
+              <Button onClick={() => {
+                setFileName(null);
+                setIsUploaded(false);
+                setIsUploading(false);
+              }}>Upload Another File</Button>
             </Space>
           )}
         </Space>

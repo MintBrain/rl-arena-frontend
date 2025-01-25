@@ -1,12 +1,22 @@
-
 /*.tab-nav .ant-tabs-nav::before {*/
 /*    border-bottom: 2px solid #ff0000;*/
 /*    width: 100vw;*/
 /*}*/
 
 
-.competition-page .tab-label {
-    /*width: 152px;*/
-    /*display: inline-block;*/
-    /*text-align: center;*/
+.competition-page {
+    .tab-label {
+        width: auto;
+        display: inline-block;
+        text-align: center;
+    }
+
+    .text-h4 {
+        @apply text-left text-lg text-text text-opacity-85 font-inter font-semibold;
+    }
+
+    .text {
+        @apply text-left text-base text-text text-opacity-85 font-inter font-medium;
+    }
+
 }
